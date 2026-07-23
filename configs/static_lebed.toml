@@ -1,0 +1,7 @@
+# Static validation against Lebed PRD 94, 034039 (hard-wall, k = sqrt(2)).
+# Expected: Lebed mode ~ 50.3% at n0 = (2/R)^3 (his Tables 1-2).
+
+mode = "static_lebed"
+static_R = 1.0
+static_n0 = 8.0
+static_n_realizations = 5

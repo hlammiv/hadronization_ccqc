@@ -140,6 +140,15 @@ def test_pathway_tracker_diquark_first():
     frac2, n2 = tr2.diquark_first_fraction([baryon])
     assert n2 == 1 and frac2 == 0.0
 
+    # regression: TWO early-bound internal pairs must count the baryon ONCE
+    # (fraction can never exceed 1)
+    tr3 = PathwayTracker(window=1.0)
+    for t in [0.0, 1.0, 2.0]:
+        tr3.update(t, [(0, 1), (1, 2)], [], labels)
+    tr3.update(3.0, [(0, 1), (0, 2), (1, 2)], [baryon], labels)
+    frac3, n3 = tr3.diquark_first_fraction([baryon])
+    assert n3 == 1 and frac3 == 1.0
+
 
 def test_persistence_tracker():
     tr = PersistenceTracker(n_persist=3)

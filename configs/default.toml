@@ -1,0 +1,26 @@
+# Default physics point: expanding fireball, u/d/s thermal + 2 ccbar pairs.
+# Production N: raise n_pairs to 1500 (N=3000) or 5000 (N=10^4).
+
+n_pairs = 300
+n_ccbar = 2
+density = 2.0        # fm^-3
+t0 = 0.20            # GeV
+
+alpha_s = 0.4
+lam_d0 = 0.4         # fm
+r0 = 0.2             # fm
+
+dt = 0.005           # fm/c
+t_equil = 10.0       # fm/c
+h0 = 0.1             # c/fm
+a_max = 12.0
+
+lambda_scatt = 1.0   # c/fm
+tau_bound = 50.0     # fm/c   ("inf" for immortal bound states)
+p_gamma = 0.1
+t_chem = 0.16        # GeV
+d_ann = 0.2          # fm
+
+snap_interval = 1.0  # fm/c
+measure_below_t = 0.16
+n_persist = 3

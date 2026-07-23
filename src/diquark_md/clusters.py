@@ -20,6 +20,7 @@ import math
 from collections import Counter
 
 import numpy as np
+from numba import njit
 
 from . import color
 from .potentials import pair_potential, pair_separation
@@ -28,29 +29,57 @@ from .units import FLAVOR_NAMES
 MAX_EXACT_SIZE = 12
 
 
-def _find_edges(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0,
-                r_cut, r_cl):
-    """Hill-bound attractive edges among alive particles."""
-    idx = np.where(alive)[0]
-    edges = []
-    for a in range(len(idx)):
-        i = idx[a]
-        for b in range(a + 1, len(idx)):
-            j = idx[b]
-            r = pair_separation(x, i, j, L)
-            if r >= r_cl:
+@njit(cache=True)
+def _edge_kernel(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0,
+                 r_cut, r_cl):
+    n = x.shape[0]
+    cap = 32 * n
+    out_i = np.empty(cap, dtype=np.int64)
+    out_j = np.empty(cap, dtype=np.int64)
+    count = 0
+    r_cl2 = r_cl * r_cl
+    for i in range(n):
+        if not alive[i]:
+            continue
+        for j in range(i + 1, n):
+            if not alive[j]:
                 continue
             c_ij = c_table[labels[i], labels[j]]
             if c_ij >= 0.0:
                 continue
+            dx = x[i, 0] - x[j, 0]
+            dy = x[i, 1] - x[j, 1]
+            dz = x[i, 2] - x[j, 2]
+            dx -= L * round(dx / L)
+            dy -= L * round(dy / L)
+            dz -= L * round(dz / L)
+            r2 = dx * dx + dy * dy + dz * dz
+            if r2 >= r_cl2:
+                continue
+            r = math.sqrt(r2)
             v = pair_potential(r, c_ij, alpha_s, lam_d, r0, r_cut)
-            e_i = math.sqrt(p[i] @ p[i] + mass[i] ** 2)
-            e_j = math.sqrt(p[j] @ p[j] + mass[j] ** 2)
-            ptot = p[i] + p[j]
-            m_inv = math.sqrt(max((e_i + e_j) ** 2 - ptot @ ptot, 0.0))
-            if m_inv - mass[i] - mass[j] + v < 0.0:
-                edges.append((i, j))
-    return edges
+            e_i = math.sqrt(p[i, 0] ** 2 + p[i, 1] ** 2 + p[i, 2] ** 2
+                            + mass[i] ** 2)
+            e_j = math.sqrt(p[j, 0] ** 2 + p[j, 1] ** 2 + p[j, 2] ** 2
+                            + mass[j] ** 2)
+            px = p[i, 0] + p[j, 0]
+            py = p[i, 1] + p[j, 1]
+            pz = p[i, 2] + p[j, 2]
+            m_inv2 = (e_i + e_j) ** 2 - (px * px + py * py + pz * pz)
+            m_inv = math.sqrt(max(m_inv2, 0.0))
+            if m_inv - mass[i] - mass[j] + v < 0.0 and count < cap:
+                out_i[count] = i
+                out_j[count] = j
+                count += 1
+    return out_i[:count], out_j[:count]
+
+
+def _find_edges(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0,
+                r_cut, r_cl):
+    """Hill-bound attractive edges among alive particles."""
+    ei, ej = _edge_kernel(x, p, labels, mass, alive, c_table, L, alpha_s,
+                          lam_d, r0, r_cut, r_cl)
+    return list(zip(ei.tolist(), ej.tolist()))
 
 
 class _UnionFind:
@@ -257,13 +286,14 @@ class PathwayTracker:
             if formed is None:
                 continue
             n_total += 1
-            for a in range(len(members)):
-                for b in range(a + 1, len(members)):
-                    key = (min(members[a], members[b]), max(members[a], members[b]))
-                    since = self.pair_bound_since.get(key)
-                    if since is not None and since <= formed - self.window:
-                        n_diquark_first += 1
-                        break
+            from itertools import combinations
+
+            for i, j in combinations(members, 2):
+                key = (min(i, j), max(i, j))
+                since = self.pair_bound_since.get(key)
+                if since is not None and since <= formed - self.window:
+                    n_diquark_first += 1
+                    break  # count each cluster at most once
         return (n_diquark_first / n_total if n_total else float("nan")), n_total
 
 
