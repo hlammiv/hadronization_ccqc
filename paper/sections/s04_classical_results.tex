@@ -1,6 +1,11 @@
 \section{Classical results}
 \label{sec:classical-results}
 
+Results below are pilot-scale ensembles ($N=604$ particles, 24 events per
+point; the multiquark-favorable ``corner'' uses $N=906$,
+$\alpha_s=0.6$, $H_0=0.05\,c/\fm$, 12 events).  \todo{production scale:
+$N=3000$--$10^4$, $\ge 100$ seeds/point, full $(\Gamma,\kappa)$ heatmap.}
+
 \subsection{Static validation and the correlated gas}
 
 \begin{figure}[t]
@@ -23,36 +28,81 @@ equilibrated-gas points (new result) and the $k$-dependence panel.}
 
 \subsection{Species formation in the expanding plasma}
 
-\todo{Fig.~3: three-panel event render (early/mid/frozen-out).}
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig5_scan_H0.pdf}
+\caption{Species yields per event versus expansion rate $H_0$
+(24 events/point, $N=604$, bootstrap errors).  Faster quenches capture
+fewer mesons but a slightly larger baryon fraction; no pentaquark
+occurred in these 72 events ($<0.125$/event at 95\%~CL).}
+\label{fig:scanH0}
+\end{figure}
 
-\todo{Fig.~4 (main): species fractions vs $t$ with $\Teff(t)$ overlay;
-pilot event ($N=604$, default parameters): 37 mesons, 2 baryons,
-2 antibaryons persistent at $a=12$; transient tetraquark appearances;
-diquark-first fraction $=1.00$ ($n=4$) --- every baryon formed through a
-persistent diquark intermediate.}
-
-\todo{Fig.~5: final M\,:\,B\,:\,T\,:\,P vs $H_0$ and $\Gamma$; heatmap in
-$(\Gamma,\kappa)$.}
+Across $H_0 = 0.05$--$0.20\,c/\fm$ the meson yield falls from
+$40.0\pm1.1$ to $35.0\pm0.9$ per event while (anti)baryons rise from
+$\sim0.46$ to $\sim0.69$ per species (Fig.~\ref{fig:scanH0});
+tetraquarks appear at the few-percent-per-event level.
+\todo{Fig.~3 event render; Fig.~4 species-vs-$t$ at defaults.}
 
 \subsection{Constituent-number penalty}
 
-\todo{Fig.~6: yield vs constituent number $(2,3,4,5)$ with Poisson
-intervals; exponential-penalty fit; qualitative comparison lines from
-statistical hadronization \cite{Andronic:2017pug} and coalescence
-\cite{Fries:2008hs,ExHIC:2010gcb}.}
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig6_penalty.pdf}
+\caption{Yield per event versus constituent number at two couplings;
+bars with arrows are 95\%~CL Poisson upper limits (no pentaquark
+observed at either point).  The penalty per added constituent is
+$\sim60\times$ ($2\to3$) and $\sim15\times$ ($3\to4$) at
+$\Gamma\approx0.8$, flattening to $\sim 70\times$ and $\sim8\times$ at
+$\Gamma\approx1.2$.}
+\label{fig:penalty}
+\end{figure}
+
+The yields fall steeply and approximately geometrically with constituent
+count --- $63\times$ from meson to baryon and $15\times$ from baryon to
+tetraquark at default coupling --- with the $3\to4$ step flattening to
+$8\times$ at the stronger-coupling corner (Fig.~\ref{fig:penalty}).
+This is the qualitative structure coalescence models predict
+\cite{Fries:2008hs,ExHIC:2010gcb}; the slope and its $\Gamma$-dependence
+are this model's quantitative output.  Four pentaquark clusters occurred
+in the $\tau_{\rm bound}$ scan, but all descend from the same
+equilibrated initial configuration (one seed recurring across scan
+points), so they constitute a single independent formation event ---
+production-scale statistics or biased seeding are required, as is a
+larger charm program: no manifestly flavor-exotic ($cc\bar q\bar q$)
+tetraquark occurred in 180 events with 2--4 injected $c\bar c$ pairs.
 
 \subsection{Annihilation timescales and flavor chemistry}
 
-\todo{Fig.~7: final ratios vs $\tau_{\rm bound}$ and $P_\gamma$
-(formation-time vs survival-time ratios; late-time meson:baryon drift
-under photon depletion).  Fig.~8: strangeness fraction vs $t$;
-charm-sector tally per injected $c\bar c$: $c\bar c$ mesons vs manifestly
-exotic ($cc\bar q\bar q$) vs hidden-flavor tetraquarks; escaped-photon
-spectrum panel.}
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig7_scan_tau.pdf}
+\caption{Species yields versus bound-pair lifetime $\tau_{\rm bound}$ at
+pure photon branching ($P_\gamma=1$).  Meson depletion is mild because
+the bound-pair duty cycle inside $d_{\rm ann}$ is small (effective
+lifetimes $\gg$ the simulated window); the apparent (anti)baryon
+enhancement at finite $\tau_{\rm bound}$ is a $\sim2\sigma$-per-channel
+effect requiring production statistics.}
+\label{fig:scantau}
+\end{figure}
+
+At $P_\gamma=1$ every annihilation removes a pair permanently: $84\pm3$
+photons escape per event, dominated by hot-phase scattering annihilation
+rather than bound-state decay (Fig.~\ref{fig:scantau}).  The planned
+lifetime-calibration observable (measured decay rate of prepared bound
+mesons versus $\tau_{\rm bound}$) will convert the duty-cycle factor
+into an effective meson width.  \todo{strangeness fraction vs $t$;
+flavor-resolved yields; escaped-photon spectrum panel; ratios vs
+$P_\gamma$ at fixed $\tau_{\rm bound}$.}
 
 \subsection{The diquark question, dynamically}
 
-\todo{Fig.~9: diquark-first fraction vs $\Gamma$ and $H_0$, with Lebed's
-static band for comparison.  Pilot indication: dynamical evolution
-\emph{amplifies} the static probability toward unity --- once a diquark
-binds it survives to seed a baryon.}
+Across every scan point --- expansion rates spanning a factor of four,
+couplings up to $\Gamma\approx1.2$, and all annihilation settings --- the
+diquark-first fraction is
+\begin{equation}
+f_{\rm diquark\text{-}first} = 0.86\text{--}1.00,
+\end{equation}
+with most points consistent with unity (e.g.\ $1.00$ at $H_0=0.10$,
+$0.96\pm0.04$ at $0.05$, $0.86\pm0.07$ at the corner).  Dynamical
+evolution \emph{amplifies} the static nearest-neighbor probability of
+Ref.~\cite{Lebed:2016jvq}: once a diquark binds, it survives to seed a
+baryon.  \todo{Fig.~9: $f$ vs $\Gamma$, $H_0$ with the static band;
+production statistics.}
