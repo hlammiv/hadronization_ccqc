@@ -1,0 +1,77 @@
+\section{Simulation methods}
+\label{sec:methods}
+
+\subsection{Dynamics and freeze-out}
+
+Relativistic kick--drift--kick leapfrog with $\dot{\mathbf x}=\mathbf p/E$;
+the Hamiltonian is separable so the scheme is symplectic.  Initialization:
+periodic cube at density $n$, exact color balance (global singlet),
+Maxwell--J\"uttner momenta at $T_0$, Andersen-type equilibration.
+Production runs are NVE plus an operator-split Hubble map with scale factor
+$a(t)=1+H_0 t$:
+\begin{equation}
+\mathbf x \to \frac{a_{n+1}}{a_n}\mathbf x,\qquad
+\mathbf p \to \frac{a_n}{a_{n+1}}\mathbf p,\qquad
+\lambda_D \to \lambda_{D,0}\, a_{n+1},
+\label{eq:hubble}
+\end{equation}
+the comoving screening following from $\lambda_D\sim 1/gT$ with
+$T\sim 1/a$.  Cooling outruns dilution, the effective coupling
+$\Gamma$ grows, and clustering is \emph{emergent}: the Hubble redshift is
+the dissipation channel that permits classical two-body capture.  No
+binding rule is imposed.
+
+\subsection{Reactions: Poisson hazards with photon and gluon channels}
+\label{sec:reactions}
+
+Matching-color, same-flavor $\qqbar$ pairs within $d_{\rm ann}$ accrue
+annihilation hazard (singlet weight $1/3$ folded in):
+\begin{equation}
+\lambda_{\rm pair} = \frac{1}{3}\times
+\begin{cases}
+\lambda_{\rm scatt} & E_{\rm pair}>0 \ \text{(in-plasma)},\\[2pt]
+1/\tau_{\rm bound} & E_{\rm pair}<0 \ \text{(formed meson or}\\
+& \text{\ $\qqbar$ sub-pair in an exotic)},
+\end{cases}
+\label{eq:hazards}
+\end{equation}
+where $E_{\rm pair}=M_{\rm inv}-m_i-m_j+V_{ij}$.  Each event branches:
+with probability $P_\gamma$ the pair converts to \emph{photons}, whose
+four-momentum leaves the system permanently (active at all temperatures ---
+the late-time meson-depletion mechanism, against which baryons are
+protected by baryon-number conservation); otherwise it converts to
+\emph{gluons}, which while $\Teff>\Tchem$ re-inject a matching-color
+$\qqbar$ pair carrying the removed four-momentum with flavor drawn from
+thermal weights at $\Teff$ (a classical strangeness-enhancement analog),
+and below $\Tchem$ are switched off.  All rates are continuous hazards
+($P=1-e^{-\lambda\,dt}$), so results are timestep-independent by
+construction.  An emergent consequence: internal annihilation converts
+tetraquark $\to$ meson and pentaquark $\to$ baryon with lifetime
+$\sim 3\tau_{\rm bound}$, giving formation-time versus survival-time ratios
+a tunable handle.
+
+\subsection{Species identification}
+\label{sec:cluster-id}
+
+A multiset of labels contains a singlet iff
+$n_r-n_{\bar r}=n_g-n_{\bar g}=n_b-n_{\bar b}$.  Per late-phase snapshot:
+(i) candidate edges between channel-attractive, pairwise Hill-bound pairs
+($M_{\rm inv}-m_i-m_j+V_{ij}<0$); (ii) union--find pre-clusters; (iii)
+exact minimum-energy partition of each pre-cluster into color-neutral
+parts or free singletons, in the spirit of the early-cluster-recognition
+algorithm of Ref.~\cite{Dorso:1993zz}; a part is bound iff
+$E_{\rm part}<-\Delta E_{\rm th}$.  The tetraquark-versus-two-mesons
+ambiguity is resolved by the partition search itself: a $(2,2)$ part
+survives only if its four-body energy beats every meson+meson split.  A
+persistence filter (identical constituent set in $\ge 3$ consecutive
+snapshots) removes transients.  Clusters are tagged by flavor content;
+tetraquarks and pentaquarks whose net flavor cannot be carried by
+$\qqbar$ or $qqq$ (e.g.\ $cc\bar u\bar d$, the $\Tcc$ analog) are classified
+\emph{manifestly exotic} --- the same classification the quantum framework
+makes with conserved charges in Sec.~\ref{sec:tier1}.
+
+The formation \emph{pathway} of every (anti)baryon is recorded: the
+\emph{diquark-first fraction} --- baryons whose history shows an internal
+same-type pair Hill-bound at least $1\fm/c$ before the full cluster
+appears --- is the dynamical generalization of the static probability of
+Ref.~\cite{Lebed:2016jvq}.

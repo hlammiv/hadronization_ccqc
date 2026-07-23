@@ -1,0 +1,84 @@
+\documentclass[aps,prd,twocolumn,superscriptaddress,nofootinbib]{revtex4-2}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black}
+
+\newcommand{\todo}[1]{\textcolor{red!70!black}{[TODO: #1]}}
+\newcommand{\qqbar}{q\bar{q}}
+\newcommand{\Teff}{T_{\mathrm{eff}}}
+\newcommand{\Tchem}{T_{\mathrm{chem}}}
+\newcommand{\Tcc}{T_{cc}^{+}}
+\newcommand{\chic}{\chi_{c1}(3872)}
+\newcommand{\fm}{\,\mathrm{fm}}
+\newcommand{\GeV}{\,\mathrm{GeV}}
+\newcommand{\MeV}{\,\mathrm{MeV}}
+
+\begin{document}
+
+\title{How Often Do Multiquark Hadrons Form?\\
+Species Ratios from a Dynamical Quark Gas and a Renormalizable
+Framework for Quantum Simulations}
+
+\author{Henry Lamm}
+\email{hlamm@fnal.gov}
+\affiliation{Fermi National Accelerator Laboratory, Batavia, Illinois, 60510, USA}
+
+\date{\today}
+
+\begin{abstract}
+Lebed's nearest-neighbor estimate [Phys.\ Rev.\ D \textbf{94}, 034039 (2016)]
+suggested that diquark formation in a quark--antiquark gas is common, with
+probabilities of tens of percent.  We extend this static counting in two
+directions.  First, we perform dynamical classical simulations of an
+expanding quark--antiquark plasma with discrete color charges,
+Casimir-weighted screened interactions, Poisson-hazard annihilation into
+gluonic and electromagnetic channels with tunable timescales, and thermal
+flavors, measuring the meson\,:\,baryon\,:\,tetraquark\,:\,pentaquark ratios
+that emerge at freeze-out together with the fraction of baryons that form
+through a diquark intermediate.  Second, we formulate a rigorous
+measurement framework through which the same species ratios become
+renormalization-group-safe observables of a real-time $3{+}1$D lattice-QCD
+quantum simulation of a fireball quench: integer-quantized conserved
+charges and spectral data read out on spatially isolated color-singlet
+clusters, organized in a four-tier hierarchy that separates
+scheme-independent state counting from deliberately scheme-labeled
+structure diagnostics.  \todo{headline numbers once production scans
+complete}
+\end{abstract}
+
+\maketitle
+
+\input{sections/s01_intro}
+\input{sections/s02_classical_model}
+\input{sections/s03_methods}
+\input{sections/s04_classical_results}
+\input{sections/s05_quantum_setup}
+\input{sections/s06_initial_states}
+\input{sections/s07_hierarchy}
+\input{sections/s08_resonances}
+\input{sections/s09_protocols}
+\input{sections/s10_confrontation}
+\input{sections/s11_conclusions}
+
+\begin{acknowledgments}
+\todo{acknowledgments; funding: Fermilab is operated by Fermi Research
+Alliance, LLC under contract DE-AC02-07CH11359 with the U.S.\ Department of
+Energy.}
+\end{acknowledgments}
+
+\appendix
+\input{sections/app_a_color}
+\input{sections/app_b_validation}
+\input{sections/app_c_charge_quantization}
+\input{sections/app_d_spectral_projectors}
+\input{sections/app_e_limits}
+\input{sections/app_f_emt}
+\input{sections/app_g_pair_spectra}
+\input{sections/app_h_flowed_projectors}
+
+\bibliography{refs}
+
+\end{document}

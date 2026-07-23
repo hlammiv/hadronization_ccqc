@@ -1,0 +1,92 @@
+\section{Renormalizable species counting: a four-tier hierarchy}
+\label{sec:hierarchy}
+
+At $t_f\gg t_{\rm fo}$, confinement and the mass gap imply the state is,
+up to $O(e^{-m_\pi d})$ corrections, a superposition of well-separated
+color-singlet clusters moving ballistically.  The measurement proceeds in
+two stages: a geometric \emph{front end} that locates clusters, and a
+hierarchy of \emph{species labels} read out on them.
+
+\subsection{Cluster front end and Gauss-law certification}
+\label{sec:front-end}
+
+Cluster support is found from the coarse-grained energy density
+$\varepsilon_\ell(\mathbf x)$ ($T^{00}$ smeared over
+$\ell_{\rm cl}$) --- a heuristic whose scheme dependence is harmless
+because all species-defining data comes from the RG-safe operators below;
+$\ell_{\rm cl}$-independence of final counts is a reported check.  Regions
+$R_i$ are super-threshold domains dilated by a buffer $d$.
+
+A bonus unique to the Hamiltonian formulation: the total color charge in
+$R_i$ equals the chromoelectric flux through $\partial R_i$, so measuring
+the boundary-link Casimir $\sum_{\partial R_i} E^2$ and finding it
+vacuum-consistent \emph{certifies gauge-invariantly that the cluster is a
+singlet}, with exponentially small tails
+(Appendix~\ref{app:charge-quantization}).
+
+\subsection{Tier 1: conserved-charge counting}
+\label{sec:tier1}
+
+On each certified cluster, measure baryon number $B$, strangeness $S$, and
+charm $C$ through \emph{exactly conserved point-split lattice vector
+currents}, for which $Z\equiv 1$ with no anomalous dimension --- the single
+most important technical choice in this construction.  Species logic:
+$B=1$ baryon; $B=0$ meson sector; \emph{manifestly exotic by charges
+alone}: $(B,C)=(0,+2)$ is at minimum $cc\bar q\bar q$ (the $\Tcc$ class),
+$B=2$ a dibaryon, etc.  Hidden-flavor exotics ($\chic$, $P_c$) are
+invisible to this tier by construction.
+
+The renormalization statement is a \emph{quantization theorem}
+(Appendix~\ref{app:charge-quantization}): on a cluster deep inside $R$
+with vacuum near $\partial R$, the distribution of the window-smeared
+charge $Q_R^{\ell_w}$ concentrates on an integer with tails
+$\le C\,e^{-m_\pi d} + O\big((a/\ell_w)^2\big)$; window smearing over
+$\ell_w$ removes the perimeter-divergent contact terms familiar from
+charge-fluctuation studies.  Integer labels carry no anomalous dimension;
+species numbers inherit RG-invariance from the labels, not from operator
+identities.
+
+\subsection{Tier 2: spectral identification}
+\label{sec:tier2}
+
+Within $t_{\rm fo}\ll t_f\ll 1/\Gamma$, a narrow exotic \emph{is} a
+cluster; its species is identified by rest mass against the independently
+computed spectrum in that flavor sector.  Two routes:
+
+\emph{Route S (primary for identification).}  Quantum phase estimation
+\cite{Kitaev:1995qy,Choi:2020pdg} on a region-restricted Hamiltonian
+$H_R$: the low-lying cluster spectrum is boundary-closure independent up
+to $O(e^{-m_\pi d})$, spectral projectors are RG-invariant (in the spirit
+of Ref.~\cite{Giusti:2008vb}), the vacuum additive constant is fixed by
+running the same QPE on a vacuum region in the same simulation, and
+disjoint-region $H_R$'s commute, allowing simultaneous per-shot
+identification (Appendix~\ref{app:spectral-projectors}).
+
+\emph{Route T (primary for momenta).}  $P^\mu_R=\int_R T^{0\mu}$ gives
+each cluster's four-momentum and hence invariant mass.  The equal-time
+renormalized energy-momentum tensor is this construction's largest
+technical obligation: we normalize through Ward identities (conservation
+across the real-time evolution plus the known total four-momentum of the
+prepared state), and defer the 3D small-flow-time program to future work
+(Appendix~\ref{app:emt}) \cite{Suzuki:2013gza,Makino:2014taa,
+DallaBrida:2020gux}.  Species identification never relies on Route T.
+
+\subsection{Tier 3: asymptotic pair spectra}
+\label{sec:tier3}
+
+Defined in Sec.~\ref{sec:resonances}: invariant-mass distributions of
+identified-cluster pairs --- the observable experiment actually reports,
+and the correct home for broad resonances.
+
+\subsection{Tier 4: flowed coalescence projectors}
+\label{sec:tier4}
+
+Instantaneous compact-multiquark projectors built from gradient-flowed
+fields \cite{Luscher:2010iy,Makino:2014taa} at fixed physical flow time
+$t_{\rm fl}$ have a continuum limit \emph{as a one-parameter labeled
+scheme}.  This tier is deliberately scheme-dependent: it is the quantum
+image of the classical binding criterion of Sec.~\ref{sec:cluster-id} and
+of Lebed's nearest-neighbor rule, and its $t_{\rm fl}$-dependence carries
+compact-versus-molecular structure information
+(Appendix~\ref{app:flowed}).  Tiers 1--3 count \emph{states}; Tier 4
+diagnoses \emph{structure}.

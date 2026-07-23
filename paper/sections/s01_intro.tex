@@ -1,0 +1,57 @@
+\section{Introduction}
+\label{sec:intro}
+
+% ARC: exotics renaissance -> do multiquark states form often or rarely?
+% -> Lebed's static estimate -> two gaps: dynamics, and rigor -> this paper.
+
+The proliferation of experimentally established multiquark candidates ---
+$\chic$~\cite{Choi:2003ue,LHCb:2020xds,CMS:2021znk}, $\Tcc$~\cite{LHCb:2021vvq,LHCb:2021auc},
+the $P_c$ pentaquarks~\cite{LHCb:2015yax,LHCb:2019kea} --- has renewed the
+question of how frequently quarks assemble into hadrons beyond $\qqbar$ and
+$qqq$.  Lebed~\cite{Lebed:2016jvq} gave a strikingly simple estimate:
+in an ideal gas of quarks and antiquarks, the nearest-neighbor distance
+distribution~\cite{Chandrasekhar:1943ws}
+\begin{equation}
+w(r)\,dr = 4\pi r^2 n\, e^{-4\pi r^3 n/3}\, dr
+\label{eq:nn}
+\end{equation}
+combined with single-gluon-exchange color factors implies that a quark is
+attracted more strongly to its nearest fellow quark than to its nearest
+antiquark tens of percent of the time.  Diquark formation, and by extension
+multiquark-hadron formation, should be \emph{common}.
+
+That estimate is static: quarks neither move, nor collide, nor annihilate,
+nor bind.  Its counting is also deliberately schematic.  This paper closes
+both gaps.
+
+First (Secs.~\ref{sec:model}--\ref{sec:classical-results}), we promote the
+model to a dynamical simulation \todo{one-paragraph summary of the classical
+model and headline results: species ratios, constituent-number penalty,
+diquark-first fraction; quote the $100\%$-diquark-first pilot number if it
+survives statistics}.
+
+Second (Secs.~\ref{sec:quantum-setup}--\ref{sec:protocols}), we ask what it
+would take to answer the same question \emph{rigorously}, from QCD itself.
+Real-time hadronization is precisely the regime where Euclidean lattice
+methods fail and quantum simulation is expected to
+excel~\cite{Bauer:2022hpo,JordanLeePreskill:2012}.  We take an ideal
+fault-tolerant quantum computer executing $3{+}1$D lattice QCD as given, and
+construct the measurement layer: gauge-invariant,
+renormalization-group-safe definitions of ``number of mesons, baryons,
+tetraquarks, pentaquarks'' in the out-state of a fireball quench, and the
+matrix elements that extract their ratios
+(Sec.~\ref{sec:hierarchy}).  The central observation is that species
+numbers built from (i) integer-quantized conserved charges on isolated
+color-singlet clusters and (ii) spectral data of those clusters are
+RG-invariant, while any definition that reaches inside a hadron is
+irreducibly scheme-dependent and must be labeled as such
+(Sec.~\ref{sec:tier4}).  A second observation defuses the finite-time
+objection: the flagship exotics are narrow
+($c\tau_{\chic}\!\approx\!165\fm$, $c\tau_{\Tcc}\!\approx\!4000\fm$), so
+there is a parametric window $t_{\rm fo}\ll t_f \ll 1/\Gamma$ in which they
+are countable clusters (Sec.~\ref{sec:resonances}).
+
+\todo{paragraph positioning against statistical hadronization
+\cite{Andronic:2017pug} and coalescence \cite{Fries:2008hs,ExHIC:2010gcb}
+predictions for exotic yields; both halves of this paper compare to those
+baselines in Sec.~\ref{sec:confrontation}.}

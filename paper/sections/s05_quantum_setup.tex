@@ -1,0 +1,27 @@
+\section{From cartoon to QCD: setup and scope}
+\label{sec:quantum-setup}
+
+The remainder of this paper constructs the measurement layer through which
+the species ratios of Sec.~\ref{sec:classical-results} become well-defined
+observables of QCD itself.  We work in the Hamiltonian (Kogut--Susskind)
+formulation~\cite{Kogut:1974ag} on a spatial lattice of spacing $a$ and
+extent $L$, at physical quark masses, and take as given a quantum computer
+able to (i) prepare the initial states of Sec.~\ref{sec:initial-states},
+(ii) evolve with $e^{-iHt}$ to hadronization times, and (iii) measure the
+operators defined below.  Digitization, truncation, and gate costs are
+outside our scope --- though we note that the renormalization of the
+real-time lattice theory itself is understood through Euclidean matching
+\cite{Carena:2021ltu}, which also supplies the scale setting assumed
+throughout.
+
+What is \emph{not} assumed away is field-theoretic rigor: every observable
+must be gauge-invariant, have a continuum limit free of anomalous
+dimensions (or carry an explicit scheme label), and come with a controlled
+error budget in the limits
+\begin{equation}
+a \ll 1/T \ll \ell_{\rm cl},\,\ell_w \ll d \ll R_F \ll L,
+\qquad
+t_{\rm fo} \ll t_f \ll 1/\Gamma_{\rm narrow},
+\label{eq:limits}
+\end{equation}
+whose ordering is derived in Appendix~\ref{app:limits}.
