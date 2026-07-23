@@ -1,0 +1,13 @@
+# Multiquark-favorable corner: stronger coupling, slower expansion, more
+# particles -- the high-statistics point for tetraquark/pentaquark counting.
+mode = "scan"
+base = "configs/default.toml"
+seeds = 12
+max_workers = 6
+
+[[points]]
+name = "corner"
+alpha_s = 0.6
+h0 = 0.05
+n_pairs = 450
+n_ccbar = 4

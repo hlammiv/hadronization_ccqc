@@ -1,0 +1,17 @@
+# Expansion-rate scan: species ratios vs Hubble rate.
+mode = "scan"
+base = "configs/default.toml"
+seeds = 24
+max_workers = 8
+
+[[points]]
+name = "H0_0.05"
+h0 = 0.05
+
+[[points]]
+name = "H0_0.10"
+h0 = 0.10
+
+[[points]]
+name = "H0_0.20"
+h0 = 0.20

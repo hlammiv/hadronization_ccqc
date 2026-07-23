@@ -1,16 +1,95 @@
 \section{Charge quantization on isolated clusters}
 \label{app:charge-quantization}
 
-\todo{Derivations A1--A3, D.  \textbf{Theorem (quantization).}  Let
-$|\Psi\rangle = |{\rm cl}\rangle_R \otimes |0\rangle_{\rm near\,\partial R}
-+ O(e^{-m_\pi d})$ and let $Q_R^{\ell_w}$ be a conserved point-split
-charge summed with a window smeared over $\ell_w$.  Then
-$\mathrm{Prob}\big(|Q_R^{\ell_w} - q| > \tfrac12\big) \le
-C e^{-m_\pi d} + O((a/\ell_w)^2)$ for the integer $q$ carried by the
-cluster.  Proof sketch: cluster decomposition + mass gap for the tails;
-point-split conservation ($Z=1$, no anomalous dimension) for the operator;
-window smearing kills perimeter contact terms in fluctuations
-(cf.\ charge-fluctuation literature).  \textbf{Corollary (A3):} Gauss-law
-singlet certification from the boundary-flux Casimir.  \textbf{Corollary
-(D):} ratios of integer-labeled species numbers have continuum limits
-free of anomalous dimensions.}
+This appendix establishes the renormalization backbone of Tier~1: that
+species labels read from finite-region conserved charges are integers up
+to controlled corrections, and that integer labels render species numbers
+and their ratios free of anomalous dimensions.
+
+\subsection{Point-split currents (A2)}
+
+For staggered or Wilson quarks the vector currents of flavor $f$ admit
+point-split lattice discretizations $j^\mu_f(x)$ that are \emph{exactly}
+conserved on the lattice, $\partial^-_\mu j^\mu_f=0$, as operator
+identities following from the invariance of the action under local phase
+rotations of $\psi_f$.  Exact conservation implies $Z_{j}=1$ to all
+orders and vanishing anomalous dimension: the charges built below
+renormalize trivially.  The only lattice artifact is a surface ambiguity:
+point-split densities straddle links, so a sharp region sum is defined up
+to $O(a)$ terms supported on $\partial R$; these are absorbed into the
+window-smearing error below.
+
+\subsection{Smeared region charges and the quantization theorem (A1)}
+
+Define the smeared region charge
+\begin{equation}
+Q^{\ell_w}_{R,f}=\sum_{\mathbf x} f_{R,\ell_w}(\mathbf x)\,
+j^0_f(\mathbf x),
+\label{eq:qsmear}
+\end{equation}
+with $f_{R,\ell_w}=1$ deep inside $R$, $0$ far outside, interpolating
+smoothly over a shell of width $\ell_w$, $a\ll\ell_w\ll d$.  Sharp
+windows ($\ell_w\to0$) develop perimeter-divergent vacuum fluctuations,
+$\langle Q_R^2\rangle_c^{\rm vac}\propto|\partial R|/a$ (the
+contact-term phenomenon familiar from charge-fluctuation and
+symmetry-resolved-entanglement studies); smearing over $\ell_w$ renders
+the fluctuations finite, $\langle (Q^{\ell_w}_R)^2\rangle_c^{\rm vac}
+= O(|\partial R|\, e^{-m_\pi \ell_w}/\ell_w^2)$ in the gapped theory.
+
+\medskip
+\noindent\textbf{Theorem (charge quantization).}
+\emph{Let $|\Psi\rangle$ satisfy the cluster condition: there is a region
+$R$ with buffer $d$ such that correlations of local operators across the
+buffer factorize up to $\epsilon_d = C\,e^{-m_\pi d}$ (cluster
+decomposition in a theory with mass gap $m_\pi$), with a state carrying
+exact global flavor charge $q\in\mathbb Z$ inside and the vacuum in the
+buffer.  Then for $a\ll\ell_w\ll d$ the outcome distribution of a
+projective measurement of $Q^{\ell_w}_{R,f}$ obeys}
+\begin{equation}
+\mathrm{Prob}\Big(\big|Q^{\ell_w}_{R,f}-q\big|>\tfrac12\Big)
+\;\le\; C_1\,e^{-m_\pi d}
+\;+\; C_2\,\frac{|\partial R|}{\ell_w^2}\,e^{-m_\pi\ell_w}
+\;+\; O\!\big((a/\ell_w)^2\big).
+\label{eq:quantization}
+\end{equation}
+
+\emph{Proof sketch.}  Write $Q^{\ell_w}_{R,f}=Q^{\rm glob}_f-
+Q^{\ell_w}_{\bar R,f}$ using exact conservation; $Q^{\rm glob}_f$ is a
+superselected integer on $|\Psi\rangle$.  The complement charge acts on
+the buffer-and-outside factor, which by the cluster condition is the
+vacuum (plus other clusters, themselves integer-charged) up to
+$\epsilon_d$; its distribution is then the vacuum distribution of a
+smeared charge, whose non-integer spread is bounded by the smeared
+vacuum fluctuation above.  Chebyshev on that variance gives the second
+term; the $O(a)$ surface ambiguity of the point-split density contributes
+at relative order $(a/\ell_w)^2$ after smearing.  \hfill$\square$
+
+\medskip
+The measured value is therefore \emph{rounded to the nearest integer}
+with exponentially small mislabeling probability: the observable is an
+integer label, and integer labels do not run.
+
+\subsection{Gauss-law singlet certification (A3)}
+
+In the Hamiltonian theory the non-Abelian Gauss law equates the total
+color charge in $R$ to the chromoelectric flux through $\partial R$:
+measuring the boundary-link Casimir $\sum_{\ell\in\partial R}E_\ell^2$
+and obtaining vacuum-consistent values certifies, gauge-invariantly and
+with the same $e^{-m_\pi d}$ tails, that the cluster in $R$ is a color
+singlet.  This certification has no Euclidean analog and is a genuine
+capability of real-time Hamiltonian simulation; it converts ``cluster''
+from a heuristic into a gauge-invariant statement.
+
+\subsection{RG-safety of species numbers and ratios (D)}
+
+A species assignment built from (i) integer flavor labels
+[Eq.~\eqref{eq:quantization}], (ii) the singlet certificate, and (iii)
+spectral windows of $H_R$ (Appendix~\ref{app:spectral-projectors}) is a
+function of RG-invariant data only.  Consequently the per-event species
+multiplicities $N_s$, their ensemble means, and all ratios
+$N_s/N_{s'}$ have continuum limits with no anomalous dimensions and no
+scheme labels beyond the physically transparent window parameters
+$(\ell_{\rm cl},\ell_w,d,t_f)$, each of which comes with a plateau
+criterion (Appendix~\ref{app:limits}).  This is the sense in which the
+classical ratios of Sec.~\ref{sec:classical-results} acquire a rigorous
+QCD counterpart.

@@ -99,6 +99,16 @@ def main(argv=None):
     if cfg["mode"] == "static_lebed":
         out = args.out or f"runs/{stem}_seed{args.seed}.json"
         _run_static(cfg, args.seed, out)
+    elif cfg["mode"] == "scan":
+        import tomllib
+
+        from .scan import run_scan
+
+        with open(args.config, "rb") as f:
+            scan_cfg = tomllib.load(f)
+        base_cfg = load_config(scan_cfg["base"])
+        out = args.out or f"runs/{stem}.jsonl"
+        run_scan(scan_cfg, base_cfg, out)
     else:
         out = args.out or f"runs/{stem}_seed{args.seed}.h5"
         _run_dynamic(cfg, args.seed, out)

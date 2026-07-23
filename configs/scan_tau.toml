@@ -1,0 +1,26 @@
+# Bound-lifetime scan at pure photon branching: survival systematics.
+# P_gamma = 1 isolates the depletion channel (no re-injection ever).
+mode = "scan"
+base = "configs/default.toml"
+seeds = 24
+max_workers = 8
+
+[[points]]
+name = "tau_5"
+tau_bound = 5.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_20"
+tau_bound = 20.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_50"
+tau_bound = 50.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_inf"
+tau_bound = "inf"
+p_gamma = 1.0
