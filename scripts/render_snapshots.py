@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Fig. 3: three-panel event render, particles colored by eventual species.
+"""Fig. 3: three-panel event render with cluster bonds and zoom insets.
+
+Full-box x-y projection: unbound quarks are faint points; members of
+eventual clusters are colored by species with bonds drawn once members
+approach each other (assembly becomes visible); rare species get large
+ringed markers; the final panel carries zoom insets on a baryon and on
+the largest exotic cluster.
 
 Usage: python scripts/render_snapshots.py runs/render_event.h5
 """
@@ -19,13 +25,14 @@ SPECIES_COLORS = {
     "tetraquark": "#eda100", "pentaquark": "#e87ba4",
     "antipentaquark": "#e87ba4",
 }
+RARE = {"baryon", "antibaryon", "tetraquark", "pentaquark", "antipentaquark"}
 FREE = "#c9c9c9"
+BOND_CUT = 1.5  # fm: draw a bond once members are this close
 
 
 def main(path):
     with h5py.File(path) as f:
         keys = sorted(f["snapshots"].keys())
-        # early / mid / late
         picks = [keys[0], keys[len(keys) // 2], keys[-1]]
         snaps = []
         for k in picks:
@@ -33,35 +40,91 @@ def main(path):
             snaps.append((g.attrs["t"], g.attrs["L"], g["x"][:], g["index"][:]))
         members = json.loads(f.attrs["final_clusters_json"])
 
-    color_of = {}
-    for mstr, species in members:
-        for i in map(int, mstr.split(",")):
-            color_of[i] = SPECIES_COLORS.get(species, "#008300")
+    clusters = [(tuple(map(int, mstr.split(","))), species)
+                for mstr, species in members]
 
-    fig, axes = plt.subplots(1, 3, figsize=(9.6, 3.4), constrained_layout=True)
-    for ax, (t, L, x, idx) in zip(axes, snaps):
-        cols = [color_of.get(int(i), FREE) for i in idx]
-        bound = np.array([c != FREE for c in cols])
-        # slab projection: keep |z - L/2| < L/6 for legibility
-        sel = np.abs(x[:, 2] - L / 2) < L / 6
-        ax.scatter(x[sel & ~bound, 0], x[sel & ~bound, 1], s=4, c=FREE,
-                   linewidths=0, alpha=0.6)
-        ax.scatter(x[sel & bound, 0], x[sel & bound, 1], s=10,
-                   c=[c for c, s_, b in zip(cols, sel, bound) if s_ and b],
-                   linewidths=0)
+    fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.6),
+                             constrained_layout=True)
+    for panel, (ax, (t, L, x, idx)) in enumerate(zip(axes, snaps)):
+        pos = {int(i): x[k] for k, i in enumerate(idx)}
+        in_cluster = {i for mem, _ in clusters for i in mem}
+
+        free_pts = np.array([pos[i] for i in pos if i not in in_cluster])
+        ax.scatter(free_pts[:, 0], free_pts[:, 1], s=2.5, c=FREE,
+                   linewidths=0, alpha=0.45)
+
+        counts = {}
+        for mem, species in clusters:
+            col = SPECIES_COLORS.get(species, "#008300")
+            pts = np.array([pos[i] for i in mem if i in pos])
+            if len(pts) == 0:
+                continue
+            # bonds between close members (skip PBC-wrapped pairs)
+            drawn = False
+            for a in range(len(pts)):
+                for b in range(a + 1, len(pts)):
+                    d = np.linalg.norm(pts[a] - pts[b])
+                    if d < BOND_CUT:
+                        ax.plot([pts[a, 0], pts[b, 0]],
+                                [pts[a, 1], pts[b, 1]],
+                                color=col, lw=1.1, alpha=0.9, zorder=3)
+                        drawn = True
+            big = species in RARE
+            ax.scatter(pts[:, 0], pts[:, 1],
+                       s=(46 if big else 11), c=col, linewidths=(0.9 if big else 0.4),
+                       edgecolors="white", zorder=(5 if big else 4))
+            if drawn or panel == 2:
+                counts[species] = counts.get(species, 0) + 1
+
         ax.set_xlim(0, L)
         ax.set_ylim(0, L)
         ax.set_aspect("equal")
-        ax.set_title(f"$t = {t:.0f}$ fm/$c$   ($L = {L:.0f}$ fm)",
-                     fontsize=9, loc="left")
         ax.set_xticks([])
         ax.set_yticks([])
-    handles = [plt.Line2D([], [], marker="o", ls="", color=c, label=sp)
+        label = "   ".join(f"{v} {k}" for k, v in sorted(counts.items()))
+        ax.set_title(f"$t={t:.0f}$ fm/$c$,  $L={L:.0f}$ fm\n{label}",
+                     fontsize=8, loc="left")
+
+    # zoom insets on the final panel: one baryon, one largest exotic
+    t, L, x, idx = snaps[-1]
+    pos = {int(i): x[k] for k, i in enumerate(idx)}
+    ax = axes[2]
+
+    def add_inset(mem, species, loc, w=1.6):
+        pts = np.array([pos[i] for i in mem if i in pos])
+        if len(pts) == 0:
+            return
+        c = pts.mean(axis=0)
+        col = SPECIES_COLORS.get(species, "#008300")
+        axi = ax.inset_axes(loc)
+        axi.scatter(pts[:, 0], pts[:, 1], s=90, c=col, edgecolors="white",
+                    linewidths=1.0, zorder=5)
+        for a in range(len(pts)):
+            for b in range(a + 1, len(pts)):
+                axi.plot(pts[[a, b], 0], pts[[a, b], 1], color=col, lw=1.6)
+        axi.set_xlim(c[0] - w, c[0] + w)
+        axi.set_ylim(c[1] - w, c[1] + w)
+        axi.set_xticks([]); axi.set_yticks([])
+        for s in axi.spines.values():
+            s.set_color(col); s.set_linewidth(1.4)
+        axi.set_title(species, fontsize=7, color=col, pad=1.5)
+        ax.indicate_inset_zoom(axi, edgecolor=col, lw=1.0)
+
+    baryons = [(m, s) for m, s in clusters if s in ("baryon", "antibaryon")]
+    exotics = sorted((c for c in clusters if len(c[0]) >= 4),
+                     key=lambda c: -len(c[0]))
+    if baryons:
+        add_inset(*baryons[0], loc=[0.02, 0.66, 0.30, 0.30])
+    if exotics:
+        add_inset(*exotics[0], loc=[0.66, 0.02, 0.30, 0.30])
+
+    handles = [plt.Line2D([], [], marker="o", ls="", color=c, label=sp,
+                          markersize=6)
                for sp, c in list(SPECIES_COLORS.items())[:5]]
     handles.append(plt.Line2D([], [], marker="o", ls="", color=FREE,
-                              label="unbound"))
-    axes[2].legend(handles=handles, fontsize=6.5, frameon=False,
-                   loc="upper right")
+                              label="unbound", markersize=4))
+    axes[0].legend(handles=handles, fontsize=6.4, frameon=False,
+                   loc="lower left")
     fig.savefig("paper/figs/fig3_render.pdf")
     fig.savefig("paper/figs/fig3_render.png", dpi=200)
     print("saved fig3")

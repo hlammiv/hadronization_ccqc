@@ -1,12 +1,59 @@
 \section{Flowed coalescence projectors}
 \label{app:flowed}
 
-\todo{Derivation G.  Compact-multiquark projectors from fields at
-gradient-flow time $t_{\rm fl}$ \cite{Luscher:2010iy}; finiteness of
-flowed composite operators (fermion flow \cite{Makino:2014taa}) gives a
-continuum limit at fixed physical $t_{\rm fl}$: a one-parameter labeled
-scheme.  Map to the classical binding criterion
-($r_0 \leftrightarrow \sqrt{8 t_{\rm fl}}$) and to Lebed's
-nearest-neighbor rule; $t_{\rm fl}$-dependence of yield ratios as a
-compact-vs-molecular diagnostic (ExHIC logic
-\cite{ExHIC:2010gcb,ExHIC:2017smd}).}
+Tier 4 asks a question Tiers 1--3 deliberately avoid: not \emph{how
+many} states with given quantum numbers exist in the out-state, but
+whether the quarks inside them are \emph{compactly} arranged.  Any
+such question requires an operator that resolves sub-hadronic
+structure, and bare multi-local quark operators
+$\bar\psi\Gamma\psi\,\bar\psi\Gamma'\psi(x)$ mix under
+renormalization with the full tower of same-quantum-number operators;
+their matrix elements have no scheme-independent continuum limit.
+
+The gradient flow provides the controlled compromise.  Fields at flow
+time $t_{\rm fl}$ are smeared over the physical radius
+$r_{\rm fl}=\sqrt{8t_{\rm fl}}$, and correlation functions of flowed
+fields are finite as $a\to0$ at fixed $t_{\rm fl}$: for the gauge
+sector this is L\"uscher's theorem \cite{Luscher:2010iy}, and flowed
+fermion bilinears require only the single multiplicative wave-function
+factor of Ref.~\cite{Makino:2014taa}, fixed nonperturbatively by a
+vacuum normalization condition.  Define, on a certified cluster region
+$R$, the flowed compactness projector
+\begin{equation}
+\Pi^{(4q)}_{t_{\rm fl}}(R) \;=\;
+\int_R \prod_{k=1}^{4} d^3x_k \;
+\Theta\!\big(\{x\};r_{\rm fl}\big)\,
+\mathcal O^\dagger_{4q,t_{\rm fl}}(\{x\})\,
+\mathcal O_{4q,t_{\rm fl}}(\{x\}),
+\end{equation}
+with $\mathcal O_{4q,t_{\rm fl}}$ a gauge-invariant four-quark
+interpolator built from flowed fields and $\Theta$ a window
+restricting the mutual separations to $\lesssim r_{\rm fl}$.  Its
+expectation value on the cluster is finite in the continuum limit and
+depends on exactly one scheme label, the physical flow radius --- a
+\emph{labeled} scheme, in contrast to the unlabeled divergences of the
+bare operator.
+
+Three uses follow.  (i)~At fixed $t_{\rm fl}$, \emph{ratios} of
+$\langle\Pi^{(4q)}\rangle$ across clusters of the same quantum numbers
+compare compactness between states with common normalization.
+(ii)~The $t_{\rm fl}$-dependence itself is the diagnostic: a compact
+tetraquark saturates $\langle\Pi\rangle$ once $r_{\rm fl}$ exceeds its
+core size, while a molecular state grows until $r_{\rm fl}$ reaches
+the hadron-pair separation --- the operator-level version of the
+coalescence yield systematics that the ExHIC program exploits
+phenomenologically \cite{ExHIC:2010gcb,ExHIC:2017smd}.  (iii)~The map
+$r_0 \leftrightarrow r_{\rm fl}$ connects this tier quantitatively to
+the classical binding criterion of Sec.~\ref{sec:cluster-id} and,
+through it, to Lebed's nearest-neighbor rule \cite{Lebed:2016jvq}:
+the classical model is, in this precise sense, the
+$\hbar\to0$ caricature of the Tier-4 measurement at fixed scheme
+label.
+
+What is \emph{not} claimed: no infrared-safe, scheme-independent
+``compactness number'' exists, because compactness is not an
+S-matrix property.  Tier 4 outputs are honest functions of
+$t_{\rm fl}$, reported as such, and their value lies in
+\emph{differential} statements --- between states, between system
+sizes, between preparations --- where the scheme label cancels in the
+comparison.
