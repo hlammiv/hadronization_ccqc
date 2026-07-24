@@ -103,9 +103,11 @@ class Simulation:
             sel = mass == m
             p[sel] = sample_juttner_momentum(m, t0, int(sel.sum()), self.rng)
         alive = np.ones(n_total, dtype=np.bool_)
+        self.cc_seed_time = None
 
         if cfg.get("seed_cc_diquarks", False) and n_ccbar >= 2:
             self._plant_cc_diquarks(x, p, labels, flavors, L)
+            self.cc_seed_time = 0.0
 
         zero_total_momentum(p, alive)
 
@@ -115,13 +117,17 @@ class Simulation:
         # exact global neutrality by construction
         assert color.is_neutral(labels)
 
-    def _plant_cc_diquarks(self, x, p, labels, flavors, L):
-        """Pair up the charm quarks into pre-formed cc diquarks: co-located
-        (separation d_seed), distinct colors, zero relative momentum.
-        Measures the survival-to-tetraquark rate given a formed diquark
-        (the biased-seeding fallback for the T_cc-analog observable)."""
+    def _plant_cc_diquarks(self, x, p, labels, flavors, L, alive=None):
+        """Pair up the (alive) charm quarks into pre-formed cc diquarks:
+        co-located (separation d_seed), distinct colors, zero relative
+        momentum.  Measures the dressing-to-tetraquark rate given a formed
+        diquark (the biased-seeding device for the T_cc-analog observable;
+        mid-run planting is a surgical intervention, stated as such)."""
         d_seed = self.cfg.get("cc_seed_separation", 0.15)
-        c_idx = np.where((flavors == FLAVOR_IDS["c"]) & (labels < 3))[0]
+        sel = (flavors == FLAVOR_IDS["c"]) & (labels < 3)
+        if alive is not None:
+            sel &= alive
+        c_idx = np.where(sel)[0]
         for a, b in zip(c_idx[0::2], c_idx[1::2]):
             if labels[a] == labels[b]:
                 # swap b's color with another charm quark's (or cycle it);
@@ -229,6 +235,22 @@ class Simulation:
                     self._assert_invariants()
                     forces, _ = self._forces()
 
+            # freeze-out-era cc-diquark seeding: plant once, at the first
+            # snapshot after T_eff drops below T_chem (regeneration-stage
+            # measurement device; melting no longer applies)
+            if (cfg.get("cc_seed_at_chem", False)
+                    and self.cc_seed_time is None
+                    and step % snap_every == 0
+                    and self.t_eff() < cfg["t_chem"]):
+                s_ = self.state
+                self._plant_cc_diquarks(s_["x"], s_["p"], s_["labels"],
+                                        s_["flavors"], self.L,
+                                        alive=s_["alive"])
+                self.cc_seed_time = self.t
+                self.nl.invalidate()
+                self._assert_invariants()
+                forces, _ = self._forces()
+
             # snapshot + measurement
             if step % snap_every == 0:
                 self._measure(measure_below_t)
@@ -287,6 +309,7 @@ class Simulation:
             gluon_events=list(self.reactions.gluon_events),
             history=self.history,
             snapshots=self.snapshots,
+            cc_seed_time=self.cc_seed_time,
             t_final=self.t,
             a_final=self.a,
         )

@@ -91,6 +91,61 @@ def lebed_static_mc(x, labels, L, R=1.0, k=np.sqrt(2.0), mode="lebed", rng=None)
     return (wins / events if events else np.nan), events
 
 
+from numba import njit
+
+
+@njit(cache=True)
+def _gr_kernel(x, labels, alive, c_table, L, r_max, n_bins):
+    """Channel-resolved pair histogram.  Classes by mean-channel C_ij:
+    0: matched q-qbar (-2/3), 1: unlike qq (-1/3), 2: mismatched q-qbar
+    (+1/3), 3: like qq (+2/3).  Returns (counts[4,n_bins], n_pairs[4])."""
+    n = x.shape[0]
+    counts = np.zeros((4, n_bins))
+    n_pairs = np.zeros(4)
+    dr = r_max / n_bins
+    for i in range(n):
+        if not alive[i]:
+            continue
+        for j in range(i + 1, n):
+            if not alive[j]:
+                continue
+            c = c_table[labels[i], labels[j]]
+            if c < -0.5:
+                cls = 0
+            elif c < 0.0:
+                cls = 1
+            elif c < 0.5:
+                cls = 2
+            else:
+                cls = 3
+            n_pairs[cls] += 1
+            dx = x[i, 0] - x[j, 0]
+            dy = x[i, 1] - x[j, 1]
+            dz = x[i, 2] - x[j, 2]
+            dx -= L * round(dx / L)
+            dy -= L * round(dy / L)
+            dz -= L * round(dz / L)
+            r = np.sqrt(dx * dx + dy * dy + dz * dz)
+            if r < r_max:
+                counts[cls, int(r / dr)] += 1
+    return counts, n_pairs
+
+
+def pair_correlation(x, labels, alive, c_table, L, r_max=2.0, n_bins=50):
+    """Channel-resolved g(r).  Returns (r_centers, g[4, n_bins])."""
+    counts, n_pairs = _gr_kernel(x, labels, alive, c_table, L, r_max, n_bins)
+    dr = r_max / n_bins
+    edges = np.linspace(0.0, r_max, n_bins + 1)
+    shell = 4.0 * np.pi / 3.0 * (edges[1:] ** 3 - edges[:-1] ** 3)
+    v = L**3
+    g = np.empty_like(counts)
+    for cls in range(4):
+        expected = n_pairs[cls] * shell / v
+        g[cls] = np.where(expected > 0, counts[cls] / expected, np.nan)
+    r_centers = 0.5 * (edges[1:] + edges[:-1])
+    return r_centers, g
+
+
 def energy_audit(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0, r_cut,
                  ledger_energy=0.0):
     """Total energy bookkeeping: kinetic + potential + escaped/ledger."""

@@ -1,0 +1,27 @@
+# PRODUCTION tau_bound scan at N=3000 (upgrades pilot Fig. 7),
+# pure photon branching.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 16
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "tau_5"
+tau_bound = 5.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_20"
+tau_bound = 20.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_50"
+tau_bound = 50.0
+p_gamma = 1.0
+
+[[points]]
+name = "tau_inf"
+tau_bound = "inf"
+p_gamma = 1.0

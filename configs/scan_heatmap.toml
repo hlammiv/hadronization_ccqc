@@ -1,0 +1,68 @@
+# PRODUCTION (Gamma, kappa) heatmap: alpha_s x lambda_D grid at N=3000.
+# Gamma = alpha_s hbar-c/(a_ws T0) in {0.59, 0.79, 0.99, 1.19};
+# kappa = a_ws/lambda_D in {1.63, 1.22, 0.81}.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 16
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "a0.3_l0.3"
+alpha_s = 0.3
+lam_d0 = 0.3
+
+[[points]]
+name = "a0.3_l0.4"
+alpha_s = 0.3
+lam_d0 = 0.4
+
+[[points]]
+name = "a0.3_l0.6"
+alpha_s = 0.3
+lam_d0 = 0.6
+
+[[points]]
+name = "a0.4_l0.3"
+alpha_s = 0.4
+lam_d0 = 0.3
+
+[[points]]
+name = "a0.4_l0.4"
+alpha_s = 0.4
+lam_d0 = 0.4
+
+[[points]]
+name = "a0.4_l0.6"
+alpha_s = 0.4
+lam_d0 = 0.6
+
+[[points]]
+name = "a0.5_l0.3"
+alpha_s = 0.5
+lam_d0 = 0.3
+
+[[points]]
+name = "a0.5_l0.4"
+alpha_s = 0.5
+lam_d0 = 0.4
+
+[[points]]
+name = "a0.5_l0.6"
+alpha_s = 0.5
+lam_d0 = 0.6
+
+[[points]]
+name = "a0.6_l0.3"
+alpha_s = 0.6
+lam_d0 = 0.3
+
+[[points]]
+name = "a0.6_l0.4"
+alpha_s = 0.6
+lam_d0 = 0.4
+
+[[points]]
+name = "a0.6_l0.6"
+alpha_s = 0.6
+lam_d0 = 0.6

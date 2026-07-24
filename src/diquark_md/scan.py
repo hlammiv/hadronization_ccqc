@@ -54,6 +54,7 @@ def _run_one(base_cfg, overrides, seed):
         "n_alive_final": res["n_alive_final"],
         "n_free_final": res["n_free_final"],
         "n_photons": len(res["photon_ledger"]),
+        "cc_seed_time": res.get("cc_seed_time"),
         "n_gluon_events": len(res["gluon_events"]),
         "t_final": res["t_final"],
         "walltime_s": round(time.time() - t_start, 2),

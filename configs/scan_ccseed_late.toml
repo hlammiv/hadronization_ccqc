@@ -1,0 +1,14 @@
+# PRODUCTION freeze-out-era cc seeding: plant bound cc diquarks at the
+# T_chem crossing (regeneration stage) instead of t=0 (they melt there).
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 24
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "ccseed_late"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+cc_seed_at_chem = true
