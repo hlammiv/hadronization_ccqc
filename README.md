@@ -29,6 +29,25 @@ python -m diquark_md run configs/default.toml        # one full expanding-fireba
 Outputs land in `runs/` as HDF5 with the resolved config and RNG seed archived.
 Figures: `scripts/plot_*.py`.
 
+## Parallelism and performance
+
+Two independent levels:
+
+- **Across events**: scan configs (`mode = "scan"`) fan (point × seed) jobs
+  over `max_workers` processes; each worker uses `numba_threads` threads
+  (both set in the scan TOML). Total cores ≈ `max_workers × numba_threads`;
+  budget ~300 MB RAM per worker. On a constrained machine use e.g.
+  `max_workers = 4`, `numba_threads = 2`.
+- **Within an event**: force/neighbor kernels are Numba-parallel
+  (`NUMBA_NUM_THREADS` env for single runs).
+
+Forces, reaction candidates, and cluster edges all run over a linked-cell +
+Verlet-skin neighbor list (`neighbors.py`, CSR layout; exact vs brute force
+by test). Amortized speedups vs the all-pairs kernels: ~3.5× at N = 3000,
+~7.8× at N = 10⁴ for forces, and the reaction candidate scan drops from
+O(N²) *serial* to sub-ms. Pure Hubble rescaling never triggers a rebuild
+(the covered radius scales with the box).
+
 ## Units
 
 ħ = c = 1; lengths in fm, energies in GeV, time in fm/c; ħc = 0.19733 GeV·fm.

@@ -29,7 +29,8 @@ from .integrator import (
     zero_total_momentum,
     expansion_substep,
 )
-from .potentials import compute_forces
+from .neighbors import NeighborList
+from .potentials import compute_forces_csr
 from .reactions import ReactionEngine
 from .units import FLAVOR_IDS, FLAVOR_MASSES, thermal_flavor_weights
 
@@ -56,6 +57,7 @@ class Simulation:
         )
         self.persistence = PersistenceTracker(cfg.get("n_persist", 3))
         self.pathways = PathwayTracker(window=cfg.get("pathway_window", 1.0))
+        self.nl = NeighborList(skin=cfg.get("neighbor_skin", 0.4))
         self.history = []          # per-snapshot dicts
         self.initial_color_vector = color.color_vector(
             self.state["labels"][self.state["alive"]]
@@ -115,11 +117,18 @@ class Simulation:
         return (self.c_table, cfg["alpha_s"], self.lam_d, cfg["r0"], r_cut,
                 self.L)
 
+    def _csr(self):
+        s = self.state
+        r_cut = min(self.L / 2.0, 6.0 * self.lam_d)
+        return self.nl.get(s["x"], s["alive"], self.L, r_cut)
+
     def _forces(self):
         c_table, alpha_s, lam_d, r0, r_cut, L = self._pot_pars()
         s = self.state
-        return compute_forces(s["x"], s["labels"], s["alive"], c_table, L,
-                              alpha_s, lam_d, r0, r_cut)
+        offsets, indices = self._csr()
+        return compute_forces_csr(s["x"], s["labels"], s["alive"], c_table,
+                                  L, alpha_s, lam_d, r0, r_cut,
+                                  offsets, indices)
 
     def t_eff(self):
         s = self.state
@@ -185,9 +194,11 @@ class Simulation:
             # reactions
             if step % react_every == 0:
                 n_ev = self.reactions.step(
-                    s, self.t, react_every * dt, self.t_eff(), self._pot_pars()
+                    s, self.t, react_every * dt, self.t_eff(),
+                    self._pot_pars(), csr=self._csr()
                 )
                 if n_ev:
+                    self.nl.invalidate()  # injections not in the pair list
                     self._assert_invariants()
                     forces, _ = self._forces()
 
@@ -218,7 +229,7 @@ class Simulation:
                 s["alive"], c_table, L, alpha_s, lam_d, r0, r_cut,
                 r_cl=cfg.get("r_cl_factor", 3.0) * lam_d,
                 delta_e_th=cfg.get("delta_e_th", 0.0),
-                return_edges=True,
+                return_edges=True, csr=self._csr(),
             )
             self.persistence.update(clusters)
             self.pathways.update(self.t, edges, clusters, s["labels"])

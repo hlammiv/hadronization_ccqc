@@ -74,12 +74,63 @@ def _edge_kernel(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0,
     return out_i[:count], out_j[:count]
 
 
+@njit(cache=True)
+def _edge_kernel_csr(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d,
+                     r0, r_cut, r_cl, offsets, indices):
+    n = x.shape[0]
+    cap = 32 * n
+    out_i = np.empty(cap, dtype=np.int64)
+    out_j = np.empty(cap, dtype=np.int64)
+    count = 0
+    r_cl2 = r_cl * r_cl
+    for i in range(n):
+        if not alive[i]:
+            continue
+        for k in range(offsets[i], offsets[i + 1]):
+            j = indices[k]
+            if j <= i or not alive[j]:
+                continue
+            c_ij = c_table[labels[i], labels[j]]
+            if c_ij >= 0.0:
+                continue
+            dx = x[i, 0] - x[j, 0]
+            dy = x[i, 1] - x[j, 1]
+            dz = x[i, 2] - x[j, 2]
+            dx -= L * round(dx / L)
+            dy -= L * round(dy / L)
+            dz -= L * round(dz / L)
+            r2 = dx * dx + dy * dy + dz * dz
+            if r2 >= r_cl2:
+                continue
+            r = math.sqrt(r2)
+            v = pair_potential(r, c_ij, alpha_s, lam_d, r0, r_cut)
+            e_i = math.sqrt(p[i, 0] ** 2 + p[i, 1] ** 2 + p[i, 2] ** 2
+                            + mass[i] ** 2)
+            e_j = math.sqrt(p[j, 0] ** 2 + p[j, 1] ** 2 + p[j, 2] ** 2
+                            + mass[j] ** 2)
+            px = p[i, 0] + p[j, 0]
+            py = p[i, 1] + p[j, 1]
+            pz = p[i, 2] + p[j, 2]
+            m_inv2 = (e_i + e_j) ** 2 - (px * px + py * py + pz * pz)
+            m_inv = math.sqrt(max(m_inv2, 0.0))
+            if m_inv - mass[i] - mass[j] + v < 0.0 and count < cap:
+                out_i[count] = i
+                out_j[count] = j
+                count += 1
+    return out_i[:count], out_j[:count]
+
+
 def _find_edges(x, p, labels, mass, alive, c_table, L, alpha_s, lam_d, r0,
-                r_cut, r_cl):
+                r_cut, r_cl, csr=None):
     """Hill-bound attractive edges among alive particles."""
-    ei, ej = _edge_kernel(x, p, labels, mass, alive, c_table, L, alpha_s,
-                          lam_d, r0, r_cut, r_cl)
-    return list(zip(ei.tolist(), ej.tolist()))
+    if csr is not None:
+        ei, ej = _edge_kernel_csr(x, p, labels, mass, alive, c_table, L,
+                                  alpha_s, lam_d, r0, r_cut, r_cl,
+                                  csr[0], csr[1])
+    else:
+        ei, ej = _edge_kernel(x, p, labels, mass, alive, c_table, L, alpha_s,
+                              lam_d, r0, r_cut, r_cl)
+    return sorted(zip(ei.tolist(), ej.tolist()))
 
 
 class _UnionFind:
@@ -160,13 +211,14 @@ def _refine_component(comp, x, p, labels, mass, c_table, L, alpha_s, lam_d,
 
 
 def find_clusters(x, p, labels, flavors, mass, alive, c_table, L, alpha_s,
-                  lam_d, r0, r_cut, r_cl, delta_e_th=0.0, return_edges=False):
+                  lam_d, r0, r_cut, r_cl, delta_e_th=0.0, return_edges=False,
+                  csr=None):
     """Full pipeline.  Returns (clusters, n_unresolved) where clusters is a
     list of dicts {members, energy, species, flavor_content, exotic};
     with return_edges=True also returns the Hill-bound attractive edge list
-    (for the PathwayTracker)."""
+    (for the PathwayTracker).  csr: optional neighbor list covering r_cl."""
     edges = _find_edges(x, p, labels, mass, alive, c_table, L, alpha_s,
-                        lam_d, r0, r_cut, r_cl)
+                        lam_d, r0, r_cut, r_cl, csr=csr)
     if not edges:
         return ([], 0, []) if return_edges else ([], 0)
     nodes = sorted({i for e in edges for i in e})

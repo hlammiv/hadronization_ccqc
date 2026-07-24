@@ -34,6 +34,42 @@ from .units import FLAVOR_NAMES, FLAVOR_MASSES, bessel_k2
 
 
 @njit(cache=True)
+def find_candidate_pairs_csr(x, labels, flavors, alive, L, d_ann,
+                             offsets, indices):
+    """CSR version: iterate quark rows only; each (q, qbar) pair appears
+    exactly once (from the quark side)."""
+    n = x.shape[0]
+    cap = 4 * n
+    ii = np.empty(cap, dtype=np.int64)
+    jj = np.empty(cap, dtype=np.int64)
+    rr = np.empty(cap, dtype=np.float64)
+    count = 0
+    d2 = d_ann * d_ann
+    for i in range(n):
+        if not alive[i] or labels[i] >= 3:
+            continue
+        for k in range(offsets[i], offsets[i + 1]):
+            j = indices[k]
+            if not alive[j] or labels[j] < 3:
+                continue
+            if labels[j] != labels[i] + 3 or flavors[j] != flavors[i]:
+                continue
+            dx = x[i, 0] - x[j, 0]
+            dy = x[i, 1] - x[j, 1]
+            dz = x[i, 2] - x[j, 2]
+            dx -= L * round(dx / L)
+            dy -= L * round(dy / L)
+            dz -= L * round(dz / L)
+            r2 = dx * dx + dy * dy + dz * dz
+            if r2 < d2 and count < cap:
+                ii[count] = i
+                jj[count] = j
+                rr[count] = math.sqrt(r2)
+                count += 1
+    return ii[:count], jj[:count], rr[:count]
+
+
+@njit(cache=True)
 def find_candidate_pairs(x, labels, flavors, alive, L, d_ann):
     """Matching-color same-flavor q-qbar pairs with separation < d_ann.
 
@@ -149,11 +185,13 @@ class ReactionEngine:
     def ledger_energy(self):
         return sum(rec[1] for rec in self.photon_ledger)
 
-    def step(self, state, t, dt_react, t_eff, potential_pars):
+    def step(self, state, t, dt_react, t_eff, potential_pars, csr=None):
         """One reaction pass over candidate pairs.  Mutates state in place.
 
         state: dict with x, p, labels, flavors, mass, alive (numpy arrays).
         potential_pars: (c_table, alpha_s, lam_d, r0, r_cut, L)
+        csr: optional (offsets, indices) neighbor list covering d_ann;
+             when given, the O(N^2) candidate scan is skipped.
         Returns number of annihilation events this pass.
         """
         x, p = state["x"], state["p"]
@@ -161,9 +199,14 @@ class ReactionEngine:
         mass, alive = state["mass"], state["alive"]
         c_table, alpha_s, lam_d, r0, r_cut, L = potential_pars
 
-        ii, jj, rr = find_candidate_pairs(
-            x, labels, flavors, alive, L, self.d_ann
-        )
+        if csr is not None:
+            ii, jj, rr = find_candidate_pairs_csr(
+                x, labels, flavors, alive, L, self.d_ann, csr[0], csr[1]
+            )
+        else:
+            ii, jj, rr = find_candidate_pairs(
+                x, labels, flavors, alive, L, self.d_ann
+            )
         if len(ii) == 0:
             return 0
 

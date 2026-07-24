@@ -60,7 +60,8 @@ def run_scan(scan_cfg, base_cfg, out_path):
     seeds = int(scan_cfg.get("seeds", 8))
     max_workers = int(scan_cfg.get("max_workers", 8))
 
-    os.environ.setdefault("NUMBA_NUM_THREADS", "2")
+    # cores used ~= max_workers x numba_threads; RAM ~= 300 MB / worker
+    os.environ["NUMBA_NUM_THREADS"] = str(scan_cfg.get("numba_threads", 2))
     jobs = [(pt, seed) for pt in points for seed in range(seeds)]
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
