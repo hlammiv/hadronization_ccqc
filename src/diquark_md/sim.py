@@ -235,13 +235,17 @@ class Simulation:
                     self._assert_invariants()
                     forces, _ = self._forces()
 
-            # freeze-out-era cc-diquark seeding: plant once, at the first
-            # snapshot after T_eff drops below T_chem (regeneration-stage
-            # measurement device; melting no longer applies)
-            if (cfg.get("cc_seed_at_chem", False)
+            # late cc-diquark seeding: plant once, at the first snapshot
+            # after T_eff drops below the chosen threshold (default: the
+            # T_chem crossing).  Scanning the threshold maps the seeded
+            # diquark's melting curve.
+            seed_below = (cfg.get("cc_seed_below_T", cfg["t_chem"])
+                          if cfg.get("cc_seed_at_chem", False)
+                          else cfg.get("cc_seed_below_T"))
+            if (seed_below is not None
                     and self.cc_seed_time is None
                     and step % snap_every == 0
-                    and self.t_eff() < cfg["t_chem"]):
+                    and self.t_eff() < seed_below):
                 s_ = self.state
                 self._plant_cc_diquarks(s_["x"], s_["p"], s_["labels"],
                                         s_["flavors"], self.L,

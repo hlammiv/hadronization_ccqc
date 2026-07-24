@@ -1,0 +1,37 @@
+# REMOTE (lenore, queue after current chain): cc-diquark melting curve.
+# Plant 6 bound cc diquarks per event when T_eff first drops below the
+# threshold; survival-to-charm-exotic rate vs planting temperature.
+# Diquark binding ~ 36 MeV: expect turn-on between 80 and 20 MeV.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 24
+max_workers = 10
+numba_threads = 2
+
+[[points]]
+name = "plant_160"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+cc_seed_below_T = 0.16
+
+[[points]]
+name = "plant_080"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+cc_seed_below_T = 0.08
+
+[[points]]
+name = "plant_040"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+cc_seed_below_T = 0.04
+
+[[points]]
+name = "plant_020"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+cc_seed_below_T = 0.02
