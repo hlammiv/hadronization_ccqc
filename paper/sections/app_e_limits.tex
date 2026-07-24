@@ -36,6 +36,35 @@ definition.  For the flagship narrow exotics the windows are parametric:
 $c\tau[\chic]\approx165\fm$ and $c\tau[\Tcc]\approx4000\fm$ against
 $t_{\rm fo}\sim10$--$20\fm/c$.
 
+\subsection{Composition of the measurement chain}
+\label{app:composition}
+
+The per-shot protocol measures, in sequence: coarse energy density
+$\varepsilon_\ell$ (region finding), boundary-flux Casimirs (singlet
+certification), smeared charges $Q^{\ell_w}_{R,f}$, and QPE on $H_R$.
+These do not commute exactly, so the chain must be shown to define an
+ordering-insensitive outcome law.  Three observations suffice.
+(i)~All primitives are smeared, quasi-local operators; for any two
+acting on regions separated by (or nested with buffer) $d$, the
+commutator is supported on the buffer, and its matrix elements on
+cluster-in-region states are $O(e^{-m_\pi d})$ by the cluster
+condition.  (ii)~Within one region the sequence is compatible up to
+the same accuracy: $[Q^{\ell_w}_{R},H_R]$ is boundary-supported
+because the exactly conserved current's divergence telescopes to
+$\partial R$; the flux Casimir lives on $\partial R$ where the state
+is vacuum up to $\epsilon_d$.  (iii)~The adaptive step --- choosing
+$\{R_i\}$ from the $\varepsilon_\ell$ record --- is classical
+conditioning: the instrument is
+$\rho \mapsto \sum_{\omega_1} K_{\omega_2(\omega_1)}
+K_{\omega_1}\rho K^\dagger_{\omega_1} K^\dagger_{\omega_2(\omega_1)}$,
+and since each Kraus family is built from convergent, RG-safe
+primitives, the composite outcome distribution converges in the
+continuum limit whenever the primitives do.  Disturbance of later
+measurements by earlier ones is bounded by the commutators of (i) and
+(ii), i.e.\ enters the error budget at the same order as the
+quantization tails already present in
+Eq.~\eqref{eq:quantization}.
+
 \subsection{Fireball boundary transients (E1) and TPQ droplet (E2)}
 
 A temperature profile interpolating to zero over $\ell_T$ with

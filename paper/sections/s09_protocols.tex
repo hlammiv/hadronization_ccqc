@@ -5,8 +5,61 @@ Per shot: evolve to $t_f$; locate clusters (front end); certify singlets
 (Gauss); measure Tier-1 charges on all clusters; run Tier-2 QPE on
 clusters needing spectral identification; record (species, $P^\mu$).
 Across shots: species multiplicities, ratios, and Tier-3 pair spectra ---
-event-ensemble statistics exactly as in experiment; the measurement is
-single, late-time, and destructive, so back-action plays no role.
+event-ensemble statistics exactly as in experiment.
+
+\subsection{From shots to ratios}
+\label{sec:shots-to-ratios}
+
+The extraction of a \emph{number} $R_{ss'}$ deserves care, because the
+per-shot protocol is an \emph{adaptive} measurement chain --- later
+measurements act on regions chosen from earlier outcomes --- rather
+than the expectation value of any local operator.  Four statements
+assemble the ratio:
+
+\emph{(i) The chain is a well-defined quantum instrument.}  Each shot
+implements a POVM whose outcome $\omega$ is the list
+$\{(s_i,P^\mu_i)\}$ of cluster labels and momenta.  Every primitive in
+the chain --- smeared energy density, boundary-flux Casimir, smeared
+charges, region-restricted QPE --- is quasi-local, and on cluster
+states any pair of primitives with separated or nested supports
+commutes up to boundary-supported terms of size $O(e^{-m_\pi d})$
+(Appendix~\ref{app:limits}).  The outcome law is therefore independent
+of measurement ordering, and back-action within a shot is controlled
+by the same exponential that controls every other systematic.  The
+region-finding step enters only as classical conditioning and needs no
+renormalization of its own.
+
+\emph{(ii) The estimator.}  With $N_s(\omega)=\sum_i
+\delta_{s_i s}$, the ratio is estimated as the ratio of shot-averaged
+means, $\hat R_{ss'} = \overline{N_s}/\overline{N_{s'}}$, with
+standard $O(1/n_{\rm shots})$ ratio-estimator bias and bootstrap
+errors --- statistics, not field theory.
+
+\emph{(iii) Unfolding.}  Labels err in enumerable ways: quantization
+tails ($e^{-m_\pi d}$), merged clusters (the flagged fraction of
+Sec.~\ref{sec:front-end}), and spectral-window collisions.  The
+measured count vector is $\langle \mathbf N\rangle_{\rm meas} =
+M\,\langle \mathbf N\rangle_{\rm true}$ with $M = \mathbb 1 +
+\delta M$, where every entry of $\delta M$ is itself measured (flagged
+fractions, window occupancies) or bounded (tails); ratios are quoted
+after inverting $M$ --- precisely the efficiency unfolding of an
+experimental analysis, with $\delta M \to 0$ in the
+plateau/continuum limits.
+
+\emph{(iv) What the ratio means.}  $R_{ss'}$ is not a vacuum constant
+of QCD: it is a functional of the specified preparation
+$(T, R_F, \mu_B, u^i)$ and of $t_f$ within its plateau --- exactly as
+experimental yields are functionals of collision energy and
+centrality.  Its field-theoretic content is that this functional has
+continuum and infinite-volume limits free of anomalous dimensions
+(Appendices~\ref{app:charge-quantization} and \ref{app:limits}),
+with all residual scheme dependence confined to stated, scannable
+window parameters.  Meaningful comparison is comparison at matched
+preparation: to the classical model of
+Secs.~\ref{sec:model}--\ref{sec:classical-results} run at the same
+$(T, n, H_0)$, to statistical hadronization at the same freeze-out,
+and ultimately between simulated and experimental systems of matched
+size and energy density.
 
 \todo{systematics table: $\ell_{\rm cl}$- and $d$-plateaus; flagged
 merged-cluster fraction; $t_f$-plateau residual slopes per species;
