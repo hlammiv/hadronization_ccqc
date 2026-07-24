@@ -44,7 +44,8 @@ for n0 in mc_n0:
         mc[mode].append((np.mean(ps[mode]),
                          np.std(ps[mode], ddof=1) / np.sqrt(3)))
 
-fig, ax = plt.subplots(figsize=(4.2, 3.2), constrained_layout=True)
+fig, (ax, ax2) = plt.subplots(1, 2, figsize=(7.0, 3.0),
+                              constrained_layout=True)
 ax.semilogx(n0_grid, ana_lebed, color=BLUE, lw=1.8,
             label="Lebed counting (analytic)")
 ax.semilogx(n0_grid, ana_disc, color=ORANGE, lw=1.8,
@@ -58,10 +59,26 @@ for mode, col in [("lebed", BLUE), ("discrete", ORANGE)]:
                 capsize=3, mfc="white", zorder=6,
                 label=f"MC ({mode} mode)")
 ax.set_xlabel(r"$n_0 R^3$")
-ax.set_ylabel(r"$P(\mathrm{nearest}\ q\ \mathrm{wins};\ k=\sqrt{2})$")
+ax.set_ylabel(r"$P(\mathrm{nearest}\ q\ \mathrm{wins})$")
 ax.set_ylim(0, 0.6)
-ax.legend(fontsize=7.2, frameon=False, loc="upper left")
-ax.spines[["top", "right"]].set_visible(False)
+ax.legend(fontsize=6.8, frameon=False, loc="upper left")
+ax.set_title(r"(a) $k=\sqrt{2}$", fontsize=9, loc="left")
+
+# (b) k-dependence at reference density
+k_grid = np.linspace(1.0, 5.0, 80)
+ax2.plot(k_grid, [lebed_analytic(8.0, k=k) for k in k_grid], color=BLUE,
+         lw=1.8)
+ax2.plot(k_grid, [lebed_analytic(8.0, k=k, frac1=2/3, frac2=1/3)
+                  for k in k_grid], color=ORANGE, lw=1.8)
+table1_k = [np.sqrt(2), 2*np.sqrt(2), 3*np.sqrt(2)]
+table1_p = [0.5029, 0.1085, 0.0346]
+ax2.plot(table1_k, table1_p, "x", color=INK, ms=7, mew=1.6, zorder=5)
+ax2.set_xlabel(r"$k$")
+ax2.set_yscale("log")
+ax2.set_title(r"(b) $n_0 R^3 = 8$", fontsize=9, loc="left")
+
+for a in (ax, ax2):
+    a.spines[["top", "right"]].set_visible(False)
 fig.savefig("paper/figs/fig2_static.pdf")
 fig.savefig("paper/figs/fig2_static.png", dpi=200)
-print("saved fig2")
+print("saved fig2 (two panels)")

@@ -1,0 +1,35 @@
+# PRODUCTION systematics: one knob at a time off the N=3000, H0=0.1
+# baseline (prod_H0.jsonl point H0_0.10 is the reference).
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 24
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "r0_0.1"
+r0 = 0.1
+
+[[points]]
+name = "r0_0.3"
+r0 = 0.3
+
+[[points]]
+name = "max_channel"
+color_mode = "max_channel"
+
+[[points]]
+name = "eth_0.02"
+delta_e_th = 0.02
+
+[[points]]
+name = "persist5"
+n_persist = 5
+
+[[points]]
+name = "fixed_lambda"
+comoving_screening = false
+
+[[points]]
+name = "dt_half"
+dt = 0.0025

@@ -87,6 +87,19 @@ def save_results(path, cfg, seed, results):
         if results["photon_ledger"]:
             f.create_dataset("photon_ledger",
                              data=np.array(results["photon_ledger"]))
+        if results.get("snapshots"):
+            snap = f.create_group("snapshots")
+            for k, (t, L, x, labels, alive) in enumerate(results["snapshots"]):
+                g_s = snap.create_group(f"{k:04d}")
+                g_s.attrs["t"] = t
+                g_s.attrs["L"] = L
+                g_s.create_dataset("x", data=x[alive])
+                g_s.create_dataset("labels", data=labels[alive])
+                g_s.create_dataset("index", data=np.where(alive)[0])
+            # final cluster membership for eventual-species coloring
+            members = [(",".join(map(str, c["members"])), c["species"])
+                       for c in results["clusters"]]
+            f.attrs["final_clusters_json"] = json.dumps(members)
         hist = results["history"]
         if hist:
             keys = ["t", "a", "t_eff", "L", "n_alive", "n_s", "n_c",

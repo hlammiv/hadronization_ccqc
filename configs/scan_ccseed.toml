@@ -1,0 +1,15 @@
+# PRODUCTION biased cc-diquark seeding: survival-to-tetraquark rate of a
+# pre-formed cc diquark at the multiquark-favorable corner (6 planted
+# diquarks per event).
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 24
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "ccseed"
+alpha_s = 0.6
+h0 = 0.05
+n_ccbar = 12
+seed_cc_diquarks = true

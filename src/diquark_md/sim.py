@@ -59,6 +59,7 @@ class Simulation:
         self.pathways = PathwayTracker(window=cfg.get("pathway_window", 1.0))
         self.nl = NeighborList(skin=cfg.get("neighbor_skin", 0.4))
         self.history = []          # per-snapshot dicts
+        self.snapshots = []        # (t, L, x, labels, alive) if enabled
         self.initial_color_vector = color.color_vector(
             self.state["labels"][self.state["alive"]]
         )
@@ -102,6 +103,10 @@ class Simulation:
             sel = mass == m
             p[sel] = sample_juttner_momentum(m, t0, int(sel.sum()), self.rng)
         alive = np.ones(n_total, dtype=np.bool_)
+
+        if cfg.get("seed_cc_diquarks", False) and n_ccbar >= 2:
+            self._plant_cc_diquarks(x, p, labels, flavors, L)
+
         zero_total_momentum(p, alive)
 
         self.state = dict(x=x, p=p, labels=labels, flavors=flavors,
@@ -109,6 +114,26 @@ class Simulation:
         self.L = L
         # exact global neutrality by construction
         assert color.is_neutral(labels)
+
+    def _plant_cc_diquarks(self, x, p, labels, flavors, L):
+        """Pair up the charm quarks into pre-formed cc diquarks: co-located
+        (separation d_seed), distinct colors, zero relative momentum.
+        Measures the survival-to-tetraquark rate given a formed diquark
+        (the biased-seeding fallback for the T_cc-analog observable)."""
+        d_seed = self.cfg.get("cc_seed_separation", 0.15)
+        c_idx = np.where((flavors == FLAVOR_IDS["c"]) & (labels < 3))[0]
+        for a, b in zip(c_idx[0::2], c_idx[1::2]):
+            if labels[a] == labels[b]:
+                # swap b's color with another charm quark's (or cycle it);
+                # cycling within the quark sector preserves neutrality only
+                # if compensated, so swap with any same-color non-charm quark
+                others = np.where((labels < 3) & (labels != labels[a])
+                                  & (flavors != FLAVOR_IDS["c"]))[0]
+                labels[b], labels[others[0]] = labels[others[0]], labels[b]
+            n_hat = self.rng.normal(size=3)
+            n_hat /= np.linalg.norm(n_hat)
+            x[b] = (x[a] + d_seed * n_hat) % L
+            p[b] = p[a].copy()  # zero relative momentum
 
     # ------------------------------------------------------------- utilities
     def _pot_pars(self):
@@ -184,9 +209,11 @@ class Simulation:
 
             # expansion substep
             a_new = 1.0 + h0 * (self.t + dt)
-            self.L, self.lam_d = expansion_substep(
+            self.L, lam_comoving = expansion_substep(
                 s["x"], s["p"], s["alive"], self.L, cfg["lam_d0"], self.a, a_new
             )
+            self.lam_d = (lam_comoving if cfg.get("comoving_screening", True)
+                          else cfg["lam_d0"])
             self.a = a_new
             self.t += dt
             step += 1
@@ -212,6 +239,10 @@ class Simulation:
     def _measure(self, measure_below_t):
         cfg = self.cfg
         t_eff = self.t_eff()
+        if cfg.get("save_snapshots", False):
+            s = self.state
+            self.snapshots.append((self.t, self.L, s["x"].copy(),
+                                   s["labels"].copy(), s["alive"].copy()))
         alive = self.state["alive"]
         flavs = self.state["flavors"][alive]
         rec = dict(t=self.t, a=self.a, t_eff=t_eff, L=self.L,
@@ -255,6 +286,7 @@ class Simulation:
             photon_ledger=list(self.reactions.photon_ledger),
             gluon_events=list(self.reactions.gluon_events),
             history=self.history,
+            snapshots=self.snapshots,
             t_final=self.t,
             a_final=self.a,
         )

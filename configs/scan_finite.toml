@@ -1,0 +1,11 @@
+# PRODUCTION finite-size: N = 10^4 at the baseline physics point.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 12
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "N10k"
+n_pairs = 5000
+n_ccbar = 20
