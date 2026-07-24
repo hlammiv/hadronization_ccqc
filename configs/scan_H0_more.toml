@@ -1,0 +1,16 @@
+# REMOTE (lenore): 48 additional independent seeds at the two slow H0
+# points (pentaquark statistics booster; merges with prod_H0.jsonl).
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 48
+seed_offset = 48
+max_workers = 10
+numba_threads = 2
+
+[[points]]
+name = "H0_0.05"
+h0 = 0.05
+
+[[points]]
+name = "H0_0.10"
+h0 = 0.10

@@ -1,0 +1,20 @@
+# REMOTE (lenore): small-system high statistics (settle the canonical
+# suppression at N=96).
+mode = "scan"
+base = "configs/default.toml"
+seeds = 128
+seed_offset = 32
+max_workers = 10
+numba_threads = 1
+
+[[points]]
+name = "N96_H0.1"
+n_pairs = 48
+n_ccbar = 0
+h0 = 0.10
+
+[[points]]
+name = "N96_H0.3"
+n_pairs = 48
+n_ccbar = 0
+h0 = 0.30

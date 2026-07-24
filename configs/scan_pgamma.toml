@@ -1,0 +1,26 @@
+# REMOTE (lenore): photon-branching scan at N=3000, tau_bound=20.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 24
+max_workers = 10
+numba_threads = 2
+
+[[points]]
+name = "pg_0.0"
+tau_bound = 20.0
+p_gamma = 0.0
+
+[[points]]
+name = "pg_0.25"
+tau_bound = 20.0
+p_gamma = 0.25
+
+[[points]]
+name = "pg_0.5"
+tau_bound = 20.0
+p_gamma = 0.5
+
+[[points]]
+name = "pg_1.0"
+tau_bound = 20.0
+p_gamma = 1.0
