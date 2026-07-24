@@ -45,6 +45,11 @@ def _run_one(base_cfg, overrides, seed):
         "species_counts": res["species_counts"],
         "exotic_counts": res["exotic_counts"],
         "diquark_first_fraction": None if dq != dq else dq,
+        "exotic_flavors": [list(c["flavor_content"]) for c in res["clusters"]
+                           if c["exotic"]],
+        "multiquark_flavors": [list(c["flavor_content"])
+                               for c in res["clusters"]
+                               if len(c["members"]) >= 4],
         "n_pathway_baryons": res["n_pathway_baryons"],
         "n_alive_final": res["n_alive_final"],
         "n_free_final": res["n_free_final"],

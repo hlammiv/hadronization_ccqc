@@ -1,10 +1,14 @@
 \section{Classical results}
 \label{sec:classical-results}
 
-Results below are pilot-scale ensembles ($N=604$ particles, 24 events per
-point; the multiquark-favorable ``corner'' uses $N=906$,
-$\alpha_s=0.6$, $H_0=0.05\,c/\fm$, 12 events).  \todo{production scale:
-$N=3000$--$10^4$, $\ge 100$ seeds/point, full $(\Gamma,\kappa)$ heatmap.}
+Results below are production ensembles at $N=3000$ quarks (48 events per
+expansion-rate point; the multiquark-favorable ``corner'' uses
+$\alpha_s=0.6$, $H_0=0.05\,c/\fm$, and twelve injected $c\bar c$ pairs,
+24 events), validated against $N=604$ pilots: the per-quark meson-bound
+fraction agrees across the factor-of-five volume change ($12.9\%$ vs
+$13.1\%$ at $H_0=0.1\,c/\fm$), as do baryon fractions within errors.
+\todo{remaining production items: $N=10^4$ finite-size point, full
+$(\Gamma,\kappa)$ heatmap, systematics table.}
 
 \subsection{Static validation and the correlated gas}
 
@@ -40,9 +44,9 @@ panel.}
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{figs/fig5_scan_H0.pdf}
 \caption{Species yields per event versus expansion rate $H_0$
-(24 events/point, $N=604$, bootstrap errors).  Faster quenches capture
-fewer mesons but a slightly larger baryon fraction; no pentaquark
-occurred in these 72 events ($<0.125$/event at 95\%~CL).}
+($N=3000$, 48 events/point, bootstrap errors).  Faster quenches capture
+fewer mesons; the tetraquark yield is flat within errors across the
+factor-of-four range of quench rates.}
 \label{fig:scanH0}
 \end{figure}
 
@@ -56,38 +60,50 @@ gradually as the Hubble redshift drains relative kinetic energy;
 \end{figure}
 
 Across $H_0 = 0.05$--$0.20\,c/\fm$ the meson yield falls from
-$40.0\pm1.1$ to $35.0\pm0.9$ per event while (anti)baryons rise from
-$\sim0.46$ to $\sim0.69$ per species (Fig.~\ref{fig:scanH0});
-tetraquarks appear at the few-percent-per-event level.  A single-event
-history is shown in Fig.~\ref{fig:speciest}.  \todo{Fig.~3 event
-render.}
+$207.4\pm1.7$ to $181.9\pm1.5$ per event, (anti)baryons sit at
+$2.3$--$2.9$ per species, and --- notably --- the tetraquark yield is
+\emph{flat} at $0.58\pm0.10$ per event across the full factor of four
+in quench rate (Fig.~\ref{fig:scanH0}).  Five-quark states appear at
+every expansion rate once both charge states are counted: $2$, $3$, and
+$3$ (anti)pentaquarks in the three 48-event ensembles, i.e.\
+$\simeq0.04$--$0.06$ per event with no significant $H_0$ trend.  A
+single-event history is shown in Fig.~\ref{fig:speciest}.
+\todo{Fig.~3 event render; fig.~4 to be regenerated from an $N=3000$
+event.}
 
 \subsection{Constituent-number penalty}
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{figs/fig6_penalty.pdf}
-\caption{Yield per event versus constituent number at two couplings;
-bars with arrows are 95\%~CL Poisson upper limits (no pentaquark
-observed at either point).  The penalty per added constituent is
-$\sim60\times$ ($2\to3$) and $\sim15\times$ ($3\to4$) at
-$\Gamma\approx0.8$, flattening to $\sim 70\times$ and $\sim8\times$ at
-$\Gamma\approx1.2$.}
+\caption{Yield per event (per species; particle and antiparticle states
+averaged) versus constituent number at two couplings, $N=3000$.  All
+four points are now measurements at both couplings.  The ladder is
+$69\times$ ($2\to3$), $4.9\times$ ($3\to4$), and $19\times$ ($4\to5$)
+at $\Gamma\approx0.8$, and $61\times$, $4.8\times$, $26\times$ at the
+charm-enriched $\Gamma\approx1.2$ corner.}
 \label{fig:penalty}
 \end{figure}
 
-The yields fall steeply and approximately geometrically with constituent
-count --- $63\times$ from meson to baryon and $15\times$ from baryon to
-tetraquark at default coupling --- with the $3\to4$ step flattening to
-$8\times$ at the stronger-coupling corner (Fig.~\ref{fig:penalty}).
-This is the qualitative structure coalescence models predict
-\cite{Fries:2008hs,ExHIC:2010gcb}; the slope and its $\Gamma$-dependence
-are this model's quantitative output.  Four pentaquark clusters occurred
-in the $\tau_{\rm bound}$ scan, but all descend from the same
-equilibrated initial configuration (one seed recurring across scan
-points), so they constitute a single independent formation event ---
-production-scale statistics or biased seeding are required, as is a
-larger charm program: no manifestly flavor-exotic ($cc\bar q\bar q$)
-tetraquark occurred in 180 events with 2--4 injected $c\bar c$ pairs.
+The production ensembles resolve the full ladder
+(Fig.~\ref{fig:penalty}): the meson$\to$baryon step costs
+$\sim65\times$, but the ladder is \emph{not} geometric beyond it ---
+adding a fourth constituent to a baryon-mass cluster costs only
+$\sim5\times$, while the fifth costs $\sim20\times$.  The cheap $3\to4$
+step reflects the combinatorics of the discrete-color model: a
+tetraquark can be assembled from two already-attractive $q\bar q$ or
+$qq$ sub-systems, whereas the first baryon requires three mutually
+attractive quarks.  This deviation from the naive
+constant-penalty-per-constituent expectation of coalescence
+\cite{Fries:2008hs,ExHIC:2010gcb} is a concrete, testable output.
+
+The charm-enriched corner delivered manifest flavor exotics: in 24
+events, \emph{seven} tetraquarks and one antipentaquark whose net
+flavor cannot be carried by any $q\bar q$ or $qqq$ assignment --- the
+classical realization of the Tier-1 charge-exotic classification of
+Sec.~\ref{sec:tier1} --- for an exotic-tetraquark yield of
+$0.29\pm0.11$ per event.  \todo{flavor decomposition of the exotic
+clusters ($cc\bar q\bar q$-class vs light-flavor-exotic) from the
+tagged re-runs.}
 
 \subsection{Annihilation timescales and flavor chemistry}
 
@@ -133,17 +149,20 @@ fixed $\tau_{\rm bound}$.}
 
 \subsection{The diquark question, dynamically}
 
-Across every scan point --- expansion rates spanning a factor of four,
-couplings up to $\Gamma\approx1.2$, and all annihilation settings --- the
-diquark-first fraction is
+The production ensembles track $\sim750$ baryon formation histories.
+Across every point --- expansion rates spanning a factor of four and
+couplings up to $\Gamma\approx1.2$ --- the diquark-first fraction is
 \begin{equation}
-f_{\rm diquark\text{-}first} = 0.86\text{--}1.00,
+f_{\rm diquark\text{-}first} = 0.91\text{--}0.95 \pm 0.02,
 \end{equation}
-with most points consistent with unity (e.g.\ $1.00$ at $H_0=0.10$,
-$0.96\pm0.04$ at $0.05$, $0.86\pm0.07$ at the corner;
-Fig.~\ref{fig:dqfirst}).  Dynamical evolution \emph{amplifies} the
-static nearest-neighbor probability of Ref.~\cite{Lebed:2016jvq}: once
-a diquark binds, it survives to seed a baryon.
+($0.92$, $0.95$, $0.93$ across the $H_0$ scan; $0.91$ at the corner;
+Fig.~\ref{fig:dqfirst}).  Two statements follow.  First, dynamical
+evolution \emph{amplifies} the static nearest-neighbor probability of
+Ref.~\cite{Lebed:2016jvq} by more than a factor of three (static band
+$26$--$31\%$ at this density): once a diquark binds, it survives to
+seed a baryon.  Second, the fraction is now measurably \emph{below}
+unity: a small but resolved population of baryons assembles all at
+once, without a persistent two-quark intermediate.
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{figs/fig9_dqfirst.pdf}

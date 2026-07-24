@@ -1,0 +1,34 @@
+# Small-system ("pp droplet") scan: species ratios vs quark multiplicity
+# and expansion rate.  Exact event-by-event charge conservation makes the
+# model canonical by construction -- the right comparison class for the
+# ALICE strangeness-vs-multiplicity trend and LHCb X(3872) multiplicity
+# dependence.  Cheap: N <= 300.
+mode = "scan"
+base = "configs/default.toml"
+seeds = 32
+max_workers = 2
+numba_threads = 1
+
+[[points]]
+name = "N96_H0.1"
+n_pairs = 48
+n_ccbar = 0
+h0 = 0.10
+
+[[points]]
+name = "N96_H0.3"
+n_pairs = 48
+n_ccbar = 0
+h0 = 0.30
+
+[[points]]
+name = "N300_H0.1"
+n_pairs = 150
+n_ccbar = 0
+h0 = 0.10
+
+[[points]]
+name = "N300_H0.3"
+n_pairs = 150
+n_ccbar = 0
+h0 = 0.30

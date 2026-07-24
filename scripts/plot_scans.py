@@ -21,8 +21,10 @@ SPECIES_COLORS = {
     "antibaryon": "#1baf7a",
     "tetraquark": "#eda100",
     "pentaquark": "#e87ba4",
+    "antipentaquark": "#e87ba4",
 }
-ORDER = ["meson", "baryon", "antibaryon", "tetraquark", "pentaquark"]
+ORDER = ["meson", "baryon", "antibaryon", "tetraquark", "pentaquark",
+         "antipentaquark"]
 
 
 def load(paths):

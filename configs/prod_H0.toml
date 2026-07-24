@@ -1,0 +1,19 @@
+# PRODUCTION: expansion-rate scan at N = 3000, 48 seeds/point.
+# Upgrades Figs 5-6 statistics and provides the finite-size check vs N=604.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 48
+max_workers = 6
+numba_threads = 2
+
+[[points]]
+name = "H0_0.05"
+h0 = 0.05
+
+[[points]]
+name = "H0_0.10"
+h0 = 0.10
+
+[[points]]
+name = "H0_0.20"
+h0 = 0.20
