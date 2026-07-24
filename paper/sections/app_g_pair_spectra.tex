@@ -1,9 +1,38 @@
 \section{Pair spectra as smeared finite-volume densities}
 \label{app:pair-spectra}
 
-\todo{Derivation F.  Eq.~\eqref{eq:pairspec} as a smeared spectral density
-\cite{Hansen:2019idp}; the $\Gamma$ vs level-spacing condition; matching
-to L\"uscher \cite{Luscher:1990ux,Briceno:2017max} and left-hand-cut
-extensions \cite{Raposo:2023oru} for the $\Tcc$ benchmark; smearing-width
-scheme statement and its cancellation in ratios of yields extracted with
-a common kernel.}
+In finite volume the two-hadron spectrum in each quantum-number sector
+is discrete, so the inclusive pair distribution
+Eq.~\eqref{eq:pairspec} is defined through a smearing kernel of width
+$\sigma$,
+\begin{equation}
+\rho_\sigma(M) = \sum_n |\langle n|\,\Pi_{h_1h_2}\,|{\rm out}\rangle|^2\,
+K_\sigma(M-E_n^{\rm cm}),
+\end{equation}
+the real-time counterpart of smeared spectral reconstruction in
+Euclidean correlators \cite{Hansen:2019idp}.  Three regimes:
+
+\emph{(i) Narrow resonance, fine spectrum} ($\Delta E \ll \Gamma \ll
+\sigma$): the line shape is resolved and yields follow from fits with
+the same scheme dependence experiment has.
+
+\emph{(ii) $\Gamma \lesssim \Delta E$}: single finite-volume levels
+carry the resonance; yields per level map to infinite-volume line
+shapes through the L\"uscher formalism
+\cite{Luscher:1990ux,Briceno:2017max}, and multi-volume running
+reconstructs the distribution.  For the $\Tcc$ benchmark the required
+finite-volume technology, including the left-hand-cut subtlety of the
+nearby $D^*$ pole, exists
+\cite{Padmanath:2022cvl,Raposo:2023oru}.
+
+\emph{(iii) Kernel independence}: ratios of yields extracted with a
+common kernel $K_\sigma$ are independent of $\sigma$ up to
+$O(\sigma/\Delta M)$ corrections, $\Delta M$ the distance to the nearest
+spectral feature --- the statement that makes Tier-3 \emph{ratios}
+well-defined even where individual line shapes are scheme-labeled.
+
+The complementarity theorem of Sec.~\ref{sec:resonances} is then
+sharp: the fireball out-state supplies the weights
+$|\langle n|\Pi|{\rm out}\rangle|^2$ (populations), while Euclidean
+spectroscopy supplies the identification of each $|n\rangle$
+(identities); the two share one finite-volume spectrum.

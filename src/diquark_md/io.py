@@ -89,8 +89,8 @@ def save_results(path, cfg, seed, results):
                              data=np.array(results["photon_ledger"]))
         hist = results["history"]
         if hist:
-            keys = ["t", "a", "t_eff", "L", "n_alive", "n_annihilations",
-                    "n_reinjections", "n_photons"]
+            keys = ["t", "a", "t_eff", "L", "n_alive", "n_s", "n_c",
+                    "n_annihilations", "n_reinjections", "n_photons"]
             arr = np.array([[h.get(k, np.nan) for k in keys] for h in hist])
             ds = f.create_dataset("history", data=arr)
             ds.attrs["columns"] = json.dumps(keys)

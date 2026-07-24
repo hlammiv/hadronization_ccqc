@@ -51,7 +51,34 @@ modeling systematic via the \texttt{max\_channel} variant.
 Flavors $u,d$ ($m=0.34\GeV$), $s$ ($0.48\GeV$) are populated with thermal
 Boltzmann weights $n_f \propto m_f^2 T K_2(m_f/T)$ at $T_0$; charm
 ($1.55\GeV$) is injected as $N_{c\bar c}$ hand-placed pairs mimicking hard
-production.  \todo{Table I: full parameter set, defaults, scan ranges.}
+production.  Table~\ref{tab:params} collects the parameter set.
+
+\begin{table}[t]
+\caption{Model parameters: defaults and ranges covered by the pilot
+scans of Sec.~\ref{sec:classical-results} (production ranges in
+Appendix~\ref{app:validation}).}
+\label{tab:params}
+\begin{ruledtabular}
+\begin{tabular}{lll}
+parameter & default & pilot scan \\
+\hline
+total density $n$ & $2.0\fm^{-3}$ & --- \\
+initial temperature $T_0$ & $0.20\GeV$ & --- \\
+coupling $\alpha_s$ & $0.4$ & $0.4$--$0.6$ \\
+screening $\lambda_{D,0}$ & $0.4\fm$ & --- \\
+softening $r_0$ & $0.2\fm$ & --- \\
+masses $m_{u,d}/m_s/m_c$ & $0.34/0.48/1.55\GeV$ & --- \\
+Hubble rate $H_0$ & $0.1\,c/\fm$ & $0.05$--$0.20$ \\
+scattering hazard $\lambda_{\rm scatt}$ & $1\,c/\fm$ & $0$--$20$ \\
+bound lifetime $\tau_{\rm bound}$ & $50\fm/c$ & $5$--$\infty$ \\
+photon branching $P_\gamma$ & $0.1$ & $0.1$--$1$ \\
+chemical freeze-out $\Tchem$ & $0.16\GeV$ & --- \\
+annihilation radius $d_{\rm ann}$ & $0.2\fm$ & --- \\
+particles $N$ & $604$ & $604$--$906$ \\
+timestep $dt$ & $0.005\fm/c$ & $dt/2$ check \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{figs/fig1_potentials.pdf}

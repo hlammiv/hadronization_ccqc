@@ -1,11 +1,42 @@
 \section{Equal-time energy-momentum tensor normalization}
 \label{app:emt}
 
-\todo{Derivation C.  Ward-identity normalization of $\int_R T^{0\mu}$:
-conservation across real-time evolution plus the known total
-four-momentum of the prepared state fixes the finite mixings without
-flow; residual $O(a)$ boundary ambiguities absorbed into the
-Appendix~\ref{app:charge-quantization} error term.  Outlook subsection:
-the 3D small-flow-time expansion on a time slice as the systematic
-alternative (Euclidean technology: \cite{Suzuki:2013gza,Makino:2014taa,
-DallaBrida:2020gux}); scale setting via \cite{Carena:2021ltu}.}
+\subsection{Ward-identity normalization (primary route)}
+
+On the lattice the translation Ward identities are broken by $O(a)$
+effects and $T^{\mu\nu}$ mixes with lower-dimensional operators; in the
+Euclidean theory the finite renormalizations are fixed by
+shifted-boundary or gradient-flow methods
+\cite{Suzuki:2013gza,Makino:2014taa,DallaBrida:2020gux}.  Our
+measurement is instead the \emph{equal-time} operator
+$P^\mu_R=\int_R T^{0\mu}$ in the Hamiltonian theory, for which we use
+the two exact handles the real-time setup provides:
+(i) $H$ itself is the generator of the simulated evolution, so the
+total energy of the prepared state is known by construction, and
+(ii) total momentum is fixed by the state-preparation kinematics
+(zero for the fireball; the flow kick adds a computable $P^i$).
+Writing the renormalized charges as
+$T^{0\mu}_{\rm ren}=Z_{\mu}\,T^{0\mu}_{\rm lat}+c_\mu\,\mathbb 1 a^{-3}
++\dots$, the sum rules
+\begin{equation}
+\sum_i P^\mu_{R_i} + P^\mu_{\rm vac-subtracted\ remainder}
+= P^\mu_{\rm total}
+\end{equation}
+across the measured shots, applied at two or more fireball energies and
+boosts, fix $Z_0$, $Z_i$, and the subtraction constants
+nonperturbatively, with no flow and no new Euclidean computation.
+Residual $O(a)$ boundary ambiguities of the region sums are absorbed
+into the same window-smearing error budget as the charges
+(Appendix~\ref{app:charge-quantization}).
+
+\subsection{Division of labor and the flow outlook}
+
+Species identification never relies on this route: Tier~2 masses come
+from spectra (Appendix~\ref{app:spectral-projectors}).  Route~T supplies
+per-cluster \emph{momenta} for Tier-3 kinematics, where normalization
+errors enter only through smooth acceptance-like distortions of pair
+spectra and cancel to first order in yield \emph{ratios} extracted with
+a common kernel.  The systematic alternative --- a 3D small-flow-time
+expansion on the time slice, i.e.\ the equal-time analog of
+Refs.~\cite{Suzuki:2013gza,Makino:2014taa} --- requires new matching
+coefficients and is deferred to a companion study.

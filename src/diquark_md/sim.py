@@ -201,8 +201,12 @@ class Simulation:
     def _measure(self, measure_below_t):
         cfg = self.cfg
         t_eff = self.t_eff()
+        alive = self.state["alive"]
+        flavs = self.state["flavors"][alive]
         rec = dict(t=self.t, a=self.a, t_eff=t_eff, L=self.L,
-                   n_alive=int(self.state["alive"].sum()),
+                   n_alive=int(alive.sum()),
+                   n_s=int((flavs == 2).sum()),
+                   n_c=int((flavs == 3).sum()),
                    n_annihilations=self.reactions.n_annihilations,
                    n_reinjections=self.reactions.n_reinjections,
                    n_photons=len(self.reactions.photon_ledger))

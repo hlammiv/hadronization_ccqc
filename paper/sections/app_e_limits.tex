@@ -1,11 +1,53 @@
 \section{Ordering of limits and the plateau criterion}
 \label{app:limits}
 
-\todo{Derivation E (+E1/E2).  The hierarchy
-$a \ll 1/T \ll \ell_{\rm cl},\ell_w \ll d \ll R_F \ll L$ and
-$t_{\rm fo} \ll t_f \ll \min(1/\Gamma_{\rm narrow}, (L - c\,t_f)$
-wraparound$)$; the $t_f$-plateau of species counts as the
-\emph{definition} of a countable species, with $O(\Gamma t_f)$ residual
-slopes for narrow states; fireball boundary transients
-$O(\ell_T^2/R_F^2)$ and their causal decoupling; gauge-invariant TPQ
-droplet concentration bound (adapting \cite{Davoudi:2022uzo}).}
+\subsection{Scale hierarchy}
+
+The construction requires
+\begin{equation}
+a \;\ll\; \frac1T \;\ll\; \ell_{\rm cl},\,\ell_w \;\ll\; d \;\ll\; R_F
+\;\ll\; L,
+\end{equation}
+read right to left: the box holds the fireball with room for ballistic
+separation; the buffer $d$ controls every $e^{-m_\pi d}$ tail; the
+smearing scales resolve hadrons but not partons; the lattice resolves
+the thermal scale.  Time scales obey
+\begin{equation}
+t_{\rm fo} \;\ll\; t_f \;\ll\;
+\min\Big(\frac{1}{\Gamma_{\rm narrow}},\; \frac{L-2R_F}{2c}\Big),
+\end{equation}
+the second entry preventing light-cone wraparound of emitted hadrons
+before measurement.  The continuum limit is taken at fixed physical
+$(\ell_{\rm cl},\ell_w,d,R_F,t_f)$; species numbers are
+anomalous-dimension free (Appendix~\ref{app:charge-quantization}), so
+the only running is in the scale setting itself.
+
+\subsection{The plateau criterion as the definition}
+
+For each species $s$ define $N_s(t_f)$ by the Tier-1/2 protocol at
+measurement time $t_f$.  \emph{The countable yield of $s$ is defined as
+the plateau value of $N_s(t_f)$}, i.e.\ the value on the window where
+$dN_s/dt_f$ is compatible with the residual slope budget:
+$O(\Gamma_s)$ from decays of narrow states, $O(e^{-m_\pi d}/t_f)$ from
+buffer tails, and $O(1/t_f)$ from late cluster mergers/splittings
+(flagged fraction).  Broad states have no plateau --- that is the
+\emph{diagnosis} that routes them to Tier~3, not a failure of the
+definition.  For the flagship narrow exotics the windows are parametric:
+$c\tau[\chic]\approx165\fm$ and $c\tau[\Tcc]\approx4000\fm$ against
+$t_{\rm fo}\sim10$--$20\fm/c$.
+
+\subsection{Fireball boundary transients (E1) and TPQ droplet (E2)}
+
+A temperature profile interpolating to zero over $\ell_T$ with
+$1/T\ll\ell_T\ll R_F$ carries surface energy
+$O(\ell_T^2/R_F^2)$ relative to the bulk; the transient it launches
+propagates inward at most at $c$, so cluster counts in regions outside
+its light cone are unaffected, and the affected fraction is itself
+$O(\ell_T/R_F)$ at fixed $t_f$.  Gauge-invariant thermal pure quantum
+states within the physical Hilbert space follow the construction of
+Ref.~\cite{Davoudi:2022uzo}; expectation values of our species
+observables concentrate on Gibbs values with fluctuations exponentially
+small in the fireball entropy (TPQ concentration
+\cite{Sugiura:2012xw}), so single-digit numbers of shots per
+thermodynamic observable suffice, while species \emph{distributions}
+are event-by-event physics exactly as in experiment.

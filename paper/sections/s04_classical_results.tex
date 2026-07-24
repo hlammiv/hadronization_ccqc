@@ -23,8 +23,17 @@ saturate at $51.5\%$ vs $41.4\%$.}
 Our Lebed-mode Monte Carlo reproduces the published hard-wall value at
 reference density, $50.45\pm0.12\%$ vs $50.29\%$, and
 Fig.~\ref{fig:static} extends the comparison across five decades of
-density in both counting modes.  \todo{add the interaction-correlated
-equilibrated-gas points (new result) and the $k$-dependence panel.}
+density in both counting modes.
+
+Beyond the ideal gas, we apply the same estimator to the
+\emph{interacting} equilibrated configurations at the simulation's own
+density ($n_0R^3=1$, $\Gamma\approx0.8$).  The paired
+(equilibrated$-$ideal, same configurations) shift is
+$+0.028\pm0.035$ (Lebed counting) and $+0.016\pm0.029$ (discrete
+counting): interaction correlations move the static probability by at
+most a few percentage points at this coupling, with a positive central
+value.  \todo{production statistics for a definitive sign; $k$-dependence
+panel.}
 
 \subsection{Species formation in the expanding plasma}
 
@@ -37,11 +46,21 @@ occurred in these 72 events ($<0.125$/event at 95\%~CL).}
 \label{fig:scanH0}
 \end{figure}
 
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig4_species_t.pdf}
+\caption{One event at default parameters ($N=604$, $H_0=0.1\,c/\fm$):
+cooling history and bound-cluster counts per snapshot.  Mesons condense
+gradually as the Hubble redshift drains relative kinetic energy;
+(anti)baryons and transient tetraquarks appear late.}
+\label{fig:speciest}
+\end{figure}
+
 Across $H_0 = 0.05$--$0.20\,c/\fm$ the meson yield falls from
 $40.0\pm1.1$ to $35.0\pm0.9$ per event while (anti)baryons rise from
 $\sim0.46$ to $\sim0.69$ per species (Fig.~\ref{fig:scanH0});
-tetraquarks appear at the few-percent-per-event level.
-\todo{Fig.~3 event render; Fig.~4 species-vs-$t$ at defaults.}
+tetraquarks appear at the few-percent-per-event level.  A single-event
+history is shown in Fig.~\ref{fig:speciest}.  \todo{Fig.~3 event
+render.}
 
 \subsection{Constituent-number penalty}
 
@@ -85,12 +104,32 @@ effect requiring production statistics.}
 
 At $P_\gamma=1$ every annihilation removes a pair permanently: $84\pm3$
 photons escape per event, dominated by hot-phase scattering annihilation
-rather than bound-state decay (Fig.~\ref{fig:scantau}).  The planned
-lifetime-calibration observable (measured decay rate of prepared bound
-mesons versus $\tau_{\rm bound}$) will convert the duty-cycle factor
-into an effective meson width.  \todo{strangeness fraction vs $t$;
-flavor-resolved yields; escaped-photon spectrum panel; ratios vs
-$P_\gamma$ at fixed $\tau_{\rm bound}$.}
+rather than bound-state decay (Fig.~\ref{fig:scantau}).  The
+lifetime calibration makes this quantitative: prepared bound mesons with
+a reference orbit (duty cycle $0.386$ inside $d_{\rm ann}$) decay with
+$\tau_{\rm eff} = (7.2\text{--}7.3)\,\tau_{\rm bound}$, measured across a
+factor of four in $\tau_{\rm bound}$ and consistent with the predicted
+$3/\text{duty} = 7.8$; wider orbits have smaller duty cycles and
+correspondingly longer effective lifetimes, which is why late-forming
+mesons deplete only mildly within the simulated window.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig8_chemistry.pdf}
+\caption{Chemistry-active slow-quench event ($H_0=0.02\,c/\fm$,
+$\lambda_{\rm scatt}=20\,c/\fm$, $P_\gamma=0.3$,
+$\tau_{\rm bound}=10\fm/c$): (a) net strangeness production through
+thermal-weight re-injection (the classical strangeness-enhancement
+analog), $N_s/N$ rising from $0.232$ to $0.251$; (b) escaped-photon pair
+energies, peaked near $2m_q$ plus thermal motion.}
+\label{fig:chem}
+\end{figure}
+
+With the gluon channel active, flavor chemistry operates:
+Fig.~\ref{fig:chem} shows a slow-quench event in which re-injection at
+falling $\Teff$ raises the strange fraction by two percentage points
+while 55 annihilations escape to the photon ledger.
+\todo{ensemble-level flavor-resolved yields; ratios vs $P_\gamma$ at
+fixed $\tau_{\rm bound}$.}
 
 \subsection{The diquark question, dynamically}
 
@@ -101,8 +140,17 @@ diquark-first fraction is
 f_{\rm diquark\text{-}first} = 0.86\text{--}1.00,
 \end{equation}
 with most points consistent with unity (e.g.\ $1.00$ at $H_0=0.10$,
-$0.96\pm0.04$ at $0.05$, $0.86\pm0.07$ at the corner).  Dynamical
-evolution \emph{amplifies} the static nearest-neighbor probability of
-Ref.~\cite{Lebed:2016jvq}: once a diquark binds, it survives to seed a
-baryon.  \todo{Fig.~9: $f$ vs $\Gamma$, $H_0$ with the static band;
-production statistics.}
+$0.96\pm0.04$ at $0.05$, $0.86\pm0.07$ at the corner;
+Fig.~\ref{fig:dqfirst}).  Dynamical evolution \emph{amplifies} the
+static nearest-neighbor probability of Ref.~\cite{Lebed:2016jvq}: once
+a diquark binds, it survives to seed a baryon.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{figs/fig9_dqfirst.pdf}
+\caption{Diquark-first fraction of baryons versus expansion rate at two
+couplings, compared with the static nearest-neighbor band evaluated at
+the simulation density ($n_0R^3=1$; band spans the Lebed and
+discrete-color countings).  Dynamics amplifies the static probability
+toward unity.}
+\label{fig:dqfirst}
+\end{figure}

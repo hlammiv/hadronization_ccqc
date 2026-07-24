@@ -1,10 +1,48 @@
 \section{Numerical validation and systematics}
 \label{app:validation}
 
-\todo{energy conservation ($|\Delta E/E|<10^{-4}$ NVE; two-body orbit
-$<10^{-6}$); $dt/2$ convergence; hazard $dt$-independence; free-expansion
-redshift; Lebed static reproduction table; finite-size $N\in\{10^3,
-3\times10^3,10^4\}$; systematics table over $r_0$, $\Delta E_{\rm th}$,
-persistence depth, color mode, comoving-vs-fixed $\lambda_D$; reinjection
-ledger drift bound; Yukawa-liquid $g(r)$ anchor
-\cite{Hamaguchi:1997pre}.}
+\subsection{Integrator and conservation}
+
+The relativistic kick--drift--kick leapfrog conserves energy to
+$|\Delta E/E|<10^{-4}$ over $10^4$ steps at production timestep
+$dt=0.005\fm/c$ in NVE many-body runs, and to $<10^{-6}$ over $2\times
+10^4$ steps for an isolated bound two-body orbit; total momentum is
+conserved to machine precision.  The energy-shifted cutoff (potential
+continuous at $r_{\rm cut}$) eliminates the truncation random walk.
+The Maxwell--J\"uttner sampler reproduces the virial estimator
+$\Teff=\langle p^2/3E\rangle$ at the half-percent level; free expansion
+redshifts momenta exactly as $1/a$.
+
+\subsection{Reaction hazards}
+
+Annihilation is implemented as continuous Poisson hazards, so event
+counts are timestep-independent by construction; ensemble survival
+probabilities match $e^{-\lambda t/3}$ at the few-percent level for both
+the scattering hazard and the bound-pair hazard, and $\tau_{\rm
+bound}\to\infty$ recovers immortal bound states exactly.  The
+\emph{lifetime calibration} converts the model parameter into an
+effective width: a prepared bound meson on a reference orbit spends a
+fraction $0.386$ of its period inside $d_{\rm ann}$, and its measured
+lifetime is $\tau_{\rm eff}=(7.2\text{--}7.3)\,\tau_{\rm bound}$ across
+$\tau_{\rm bound}=0.5$--$2\fm/c$ (150 trials each, exponential MLE),
+against the duty-cycle prediction $3/0.386=7.8$.  Four-momentum, color
+neutrality, and net flavor are conserved exactly through photon and
+re-injection events (asserted at runtime on every event).
+
+\subsection{Cluster identification}
+
+Unit configurations: an $rgb$ triple identifies as one baryon, not
+fragments; two well-separated tight mesons never merge into a
+tetraquark; a compact $(2,2)$ blob is assigned tetraquark only when its
+four-body energy beats every meson+meson split; a $cc\bar u\bar d$
+cluster is flagged manifestly exotic while $c\bar c q\bar q$ is not.
+The persistence filter (three consecutive snapshots) removes transient
+coincidences; its depth, the binding threshold $\Delta E_{\rm th}$, and
+the prefilter radius $r_{\rm cl}$ are scanned systematics.
+
+\subsection{Systematics summary}
+
+\todo{table over $r_0$, $\Delta E_{\rm th}$, persistence depth,
+\texttt{color\_mode}, comoving-vs-fixed $\lambda_D$, $dt/2$, and
+finite size $N\in\{10^3,3\times10^3,10^4\}$ --- production runs.
+Yukawa-liquid $g(r)$ anchor vs Ref.~\cite{Hamaguchi:1997pre} pending.}
