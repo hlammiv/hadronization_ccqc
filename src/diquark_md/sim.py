@@ -226,12 +226,16 @@ class Simulation:
 
             # reactions
             if step % react_every == 0:
+                n_inj_before = self.reactions.n_reinjections
                 n_ev = self.reactions.step(
                     s, self.t, react_every * dt, self.t_eff(),
                     self._pot_pars(), csr=self._csr()
                 )
                 if n_ev:
-                    self.nl.invalidate()  # injections not in the pair list
+                    # removals are masked by alive[] in every kernel; only
+                    # injected particles are missing from the pair list
+                    if self.reactions.n_reinjections > n_inj_before:
+                        self.nl.invalidate()
                     self._assert_invariants()
                     forces, _ = self._forces()
 

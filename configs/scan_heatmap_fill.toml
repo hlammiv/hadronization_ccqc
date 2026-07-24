@@ -1,0 +1,28 @@
+# REMOTE (lenore): refill of the four heatmap points lost to the local
+# resource collision (worker pool killed by a concurrent full-priority
+# campaign).  Merged in preference to the damaged local records.
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 16
+max_workers = 10
+numba_threads = 2
+
+[[points]]
+name = "a0.5_l0.6"
+alpha_s = 0.5
+lam_d0 = 0.6
+
+[[points]]
+name = "a0.6_l0.3"
+alpha_s = 0.6
+lam_d0 = 0.3
+
+[[points]]
+name = "a0.6_l0.4"
+alpha_s = 0.6
+lam_d0 = 0.4
+
+[[points]]
+name = "a0.6_l0.6"
+alpha_s = 0.6
+lam_d0 = 0.6
