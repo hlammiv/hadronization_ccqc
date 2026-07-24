@@ -33,13 +33,14 @@ density in both counting modes.
 
 Beyond the ideal gas, we apply the same estimator to the
 \emph{interacting} equilibrated configurations at the simulation's own
-density ($n_0R^3=1$, $\Gamma\approx0.8$).  The paired
-(equilibrated$-$ideal, same configurations) shift is
-$+0.028\pm0.035$ (Lebed counting) and $+0.016\pm0.029$ (discrete
-counting): interaction correlations move the static probability by at
-most a few percentage points at this coupling, with a positive central
-value.  \todo{production statistics for a definitive sign of the
-correlated-gas shift.}
+density ($n_0R^3=1$, $\Gamma\approx0.8$).  With 64 paired seeds at
+$N=3000$, the (equilibrated$-$ideal, same configurations) shift is
+\emph{zero}: $-0.0004\pm0.0035$ (Lebed counting) and
+$+0.0009\pm0.0033$ (discrete counting) --- interaction correlations
+leave the static probability untouched at this coupling
+($|\Delta P|<0.7\%$ at 95\%~CL).  The nearest-neighbor estimate is
+robust not only to screening assumptions, as
+Ref.~\cite{Lebed:2016jvq} showed, but to liquid-state correlations.
 
 \subsection{Species formation in the expanding plasma}
 
@@ -66,9 +67,10 @@ $207.4\pm1.7$ to $181.9\pm1.5$ per event, (anti)baryons sit at
 $2.3$--$2.9$ per species, and --- notably --- the tetraquark yield is
 \emph{flat} at $0.58\pm0.10$ per event across the full factor of four
 in quench rate (Fig.~\ref{fig:scanH0}).  Five-quark states appear at
-every expansion rate once both charge states are counted: $2$, $3$, and
-$3$ (anti)pentaquarks in the three 48-event ensembles, i.e.\
-$\simeq0.04$--$0.06$ per event with no significant $H_0$ trend.  A
+every expansion rate once both charge states are counted: with 96
+seeds at the two slower points, $4$ and $6$ (anti)pentaquarks
+($0.042$ and $0.062$ per event), and $3$ in 48 events at
+$H_0=0.2\,c/\fm$, with no significant $H_0$ trend.  A
 single-event history is shown in Fig.~\ref{fig:speciest}, and
 Fig.~\ref{fig:render} renders the assembly process: particles colored
 by their \emph{eventual} species are uncorrelated at early times,
@@ -128,11 +130,17 @@ planting six \emph{pre-formed, bound} $cc$ diquarks per event at $t=0$
 (144 seeded diquarks over 24 events) still produced zero charm
 exotics --- the $\sim36\MeV$ diquark binding is no match for the
 $T_0=200\MeV$ plasma, and the seeds melt in the first fm/$c$, each
-charm quark ending in an ordinary charm meson.  The model thus
-exhibits the classical analog of charmonium melting, and locates
-$cc\bar q\bar q$ formation in the \emph{late} (regeneration) stage:
-measuring it requires freeze-out-era seeding, deferred to the
-$(\Gamma,\kappa)$ production study.
+charm quark ending in an ordinary charm meson.  Nor does planting at
+the chemical freeze-out crossing help: a further 144 diquarks seeded
+when $\Teff$ first falls below $\Tchem=160\MeV$ likewise produced
+zero charm exotics --- chemical freeze-out is still four times hotter
+than the diquark binding.  The classical model thus predicts
+double-charm exotics to be \emph{doubly} suppressed: melted while the
+medium is hot, partner-starved once it is dilute.  The seeded
+diquark's melting curve (survival versus planting temperature,
+expected to turn on near $T\sim$ the binding energy) is the designed
+completion of this measurement.  \todo{melting-curve scan
+(plant at $160/80/40/20\MeV$).}
 
 Exotic yields carry one dominant modeling uncertainty: under the
 \texttt{max\_channel} color prescription (Appendix~\ref{app:color})
@@ -180,9 +188,15 @@ energies, peaked near $2m_q$ plus thermal motion.}
 With the gluon channel active, flavor chemistry operates:
 Fig.~\ref{fig:chem} shows a slow-quench event in which re-injection at
 falling $\Teff$ raises the strange fraction by two percentage points
-while 55 annihilations escape to the photon ledger.
-\todo{ensemble-level flavor-resolved yields; ratios vs $P_\gamma$ at
-fixed $\tau_{\rm bound}$.}
+while 55 annihilations escape to the photon ledger.  A dedicated
+$P_\gamma$ scan ($N=3000$, $\tau_{\rm bound}=20\fm/c$, 24 events per
+point) finds the species ratios \emph{flat} in the branching fraction
+--- mesons $191$--$195$, tetraquarks $0.67$--$0.75$ per event across
+$P_\gamma=0$--$1$ --- while the escaped-photon count scales linearly
+($0$, $91$, $168$, $370$ per 24 events): at these timescales the
+electromagnetic drain decouples from the hadro-chemistry, making the
+photon ledger a clean emission observable rather than a chemistry
+distorter.  \todo{ensemble-level flavor-resolved yields.}
 
 \subsection{The diquark question, dynamically}
 
