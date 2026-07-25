@@ -111,12 +111,37 @@ def main(path):
     pos = {int(i): x[k] for k, i in enumerate(idx)}
     ax = axes[2]
 
-    def add_inset(mem, species, loc):
+    CORNERS = {  # slot name -> (inset rect, corner center in axes frac)
+        "TL": ([0.03, 0.63, 0.32, 0.32], (0.19, 0.79)),
+        "TR": ([0.65, 0.63, 0.32, 0.32], (0.81, 0.79)),
+        "BL": ([0.03, 0.05, 0.32, 0.32], (0.19, 0.21)),
+        "BR": ([0.65, 0.05, 0.32, 0.32], (0.81, 0.21)),
+    }
+    used_corners = set()
+
+    def nearest_free_corner(c, L_box):
+        fx, fy = c[0] / L_box, c[1] / L_box
+        best, best_d = None, 1e9
+        for name, (rect, (cx, cy)) in CORNERS.items():
+            if name in used_corners:
+                continue
+            d = (fx - cx) ** 2 + (fy - cy) ** 2
+            if d < best_d:
+                best, best_d = name, d
+        return best
+
+    def add_inset(mem, species):
         pts = np.array([pos[i] for i in mem if i in pos])
         if len(pts) == 0:
             return
-        pts = recenter(pts, snaps[-1][1])
+        L_box = snaps[-1][1]
+        pts = recenter(pts, L_box)
         c = pts.mean(axis=0)
+        corner = nearest_free_corner(c, L_box)
+        if corner is None:
+            return
+        used_corners.add(corner)
+        loc = CORNERS[corner][0]
         sep = max(np.linalg.norm(pts[a] - pts[b])
                   for a in range(len(pts)) for b in range(a + 1, len(pts)))
         w = 0.75 * sep + 0.5
@@ -148,10 +173,12 @@ def main(path):
     exotics = sorted((c for c in clusters
                       if len(c[0]) >= 4 and final_sep(c[0]) < cut_f),
                      key=lambda c: (-len(c[0]), final_sep(c[0])))
-    if baryons:
-        add_inset(*baryons[0], loc=[0.02, 0.66, 0.30, 0.30])
     if exotics:
-        add_inset(*exotics[0], loc=[0.66, 0.02, 0.30, 0.30])
+        add_inset(*exotics[0])
+    if len(exotics) > 1 and len(exotics[1][0]) != len(exotics[0][0]):
+        add_inset(*exotics[1])  # e.g. both a pentaquark and a tetraquark
+    if baryons:
+        add_inset(*baryons[0])
 
     handles = [plt.Line2D([], [], marker="o", ls="", color=c, label=sp,
                           markersize=6)
