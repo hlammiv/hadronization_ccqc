@@ -130,16 +130,13 @@ def main(path):
                 best, best_d = name, d
         return best
 
-    def add_inset(mem, species):
+    def add_inset(mem, species, corner):
         pts = np.array([pos[i] for i in mem if i in pos])
         if len(pts) == 0:
             return
         L_box = snaps[-1][1]
         pts = recenter(pts, L_box)
         c = pts.mean(axis=0)
-        corner = nearest_free_corner(c, L_box)
-        if corner is None:
-            return
         used_corners.add(corner)
         loc = CORNERS[corner][0]
         sep = max(np.linalg.norm(pts[a] - pts[b])
@@ -173,12 +170,44 @@ def main(path):
     exotics = sorted((c for c in clusters
                       if len(c[0]) >= 4 and final_sep(c[0]) < cut_f),
                      key=lambda c: (-len(c[0]), final_sep(c[0])))
+    # joint (cluster, corner) choice: among all compact candidates of a
+    # species class, take the one already sitting beside a free corner --
+    # connectors stay short and cannot cross or hide other insets
+    L_box = snaps[-1][1]
+
+    def axfrac(mem):
+        pts = recenter(np.array([pos[i] for i in mem if i in pos]), L_box)
+        c = (pts.mean(axis=0) % L_box) / L_box
+        return c
+
+    def rect_contains(rect, f):
+        x0, y0, w_, h_ = rect
+        return x0 <= f[0] <= x0 + w_ and y0 <= f[1] <= y0 + h_
+
+    def pick(cands):
+        best = None
+        for mem, species in cands:
+            f = axfrac(mem)
+            for name, (rect, (cx, cy)) in CORNERS.items():
+                if name in used_corners:
+                    continue
+                d = np.hypot(f[0] - cx, f[1] - cy)
+                if rect_contains(rect, f):
+                    d += 1.0  # do not hide the target under its own inset
+                if best is None or d < best[0]:
+                    best = (d, mem, species, name)
+        return best
+
+    # largest exotic size class first, then baryons
     if exotics:
-        add_inset(*exotics[0])
-    if len(exotics) > 1 and len(exotics[1][0]) != len(exotics[0][0]):
-        add_inset(*exotics[1])  # e.g. both a pentaquark and a tetraquark
+        top = len(exotics[0][0])
+        got = pick([c for c in exotics if len(c[0]) == top])
+        if got:
+            add_inset(got[1], got[2], got[3])
     if baryons:
-        add_inset(*baryons[0])
+        got = pick(baryons)
+        if got:
+            add_inset(got[1], got[2], got[3])
 
     handles = [plt.Line2D([], [], marker="o", ls="", color=c, label=sp,
                           markersize=6)
