@@ -29,36 +29,23 @@ $T/M$ reaching the percent level --- while the diquark-first fraction
 never leaves the $0.81$--$0.95$ band, making the amplification of the
 static estimate a plane-wide, not point-specific, conclusion.
 
-\subsection{Static validation and the correlated gas}
+\subsection{Static limit}
 
-\begin{figure*}[t]
-\includegraphics[width=0.85\textwidth]{figs/fig2_static.pdf}
-\caption{Static diquark-formation probability [Eq.~\eqref{eq:pstatic},
-hard wall]: (a) versus per-species density at $k=\sqrt2$, (b) versus
-the force-ratio criterion $k$ at reference density.  Lebed's counting
-($n_1{=}3n_2$, blue) and the discrete-color counting ($n_1{=}2n_2$,
-orange), analytic curves with ideal-gas Monte Carlo points; crosses are
-Tables~1--2 of Ref.~\cite{Lebed:2016jvq}, reproduced to all quoted
-digits.  The countings coincide in the dilute (purely geometric) limit,
-cross at intermediate density, and saturate at $51.5\%$ vs $41.4\%$.}
-\label{fig:static}
-\end{figure*}
-
-Our Lebed-mode Monte Carlo reproduces the published hard-wall value at
-reference density, $50.45\pm0.12\%$ vs $50.29\%$, and
-Fig.~\ref{fig:static} extends the comparison across five decades of
-density in both counting modes.
-
-Beyond the ideal gas, we apply the same estimator to the
-\emph{interacting} equilibrated configurations at the simulation's own
-density ($n_0R^3=1$, $\Gamma\approx0.8$).  With 64 paired seeds at
-$N=3000$, the (equilibrated$-$ideal, same configurations) shift is
-\emph{zero}: $-0.0004\pm0.0035$ (Lebed counting) and
-$+0.0009\pm0.0033$ (discrete counting) --- interaction correlations
-leave the static probability untouched at this coupling
-($|\Delta P|<0.7\%$ at 95\%~CL).  The nearest-neighbor estimate is
-robust not only to screening assumptions, as
-Ref.~\cite{Lebed:2016jvq} showed, but to liquid-state correlations.
+The static machinery of Ref.~\cite{Lebed:2016jvq} is reproduced
+exactly --- our closed-form estimator [Eq.~\eqref{eq:pstatic}] matches
+every hard-wall entry of his Tables~1--2 to all quoted digits, and the
+ideal-gas Monte Carlo agrees in both counting modes
+(Appendix~\ref{app:color}, where the $\sim9$-point difference between
+his channel counting and the discrete-color counting is quantified as
+the prescription systematic).  One static result is new: applying the
+estimator to \emph{interacting} equilibrated configurations at the
+simulation's density ($n_0R^3=1$, $\Gamma\approx0.8$, 64 paired seeds
+at $N=3000$) shifts the probability by
+$-0.0004\pm0.0035$ (Lebed counting) and $+0.0009\pm0.0033$ (discrete)
+--- zero.  The nearest-neighbor estimate is robust not only to
+screening assumptions, as Ref.~\cite{Lebed:2016jvq} showed, but to
+liquid-state correlations; the interesting physics is therefore
+entirely in the dynamics.
 
 \subsection{Species formation in the expanding plasma}
 

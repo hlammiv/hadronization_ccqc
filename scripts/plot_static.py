@@ -44,8 +44,13 @@ for n0 in mc_n0:
         mc[mode].append((np.mean(ps[mode]),
                          np.std(ps[mode], ddof=1) / np.sqrt(3)))
 
-fig, (ax, ax2) = plt.subplots(1, 2, figsize=(7.0, 3.0),
-                              constrained_layout=True)
+STACKED = True
+if STACKED:
+    fig, (ax, ax2) = plt.subplots(2, 1, figsize=(3.5, 5.4),
+                                  constrained_layout=True)
+else:
+    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(7.0, 3.0),
+                                  constrained_layout=True)
 ax.semilogx(n0_grid, ana_lebed, color=BLUE, lw=1.8,
             label="Lebed counting (analytic)")
 ax.semilogx(n0_grid, ana_disc, color=ORANGE, lw=1.8,
@@ -79,6 +84,7 @@ ax2.set_title(r"(b) $n_0 R^3 = 8$", fontsize=9, loc="left")
 
 for a in (ax, ax2):
     a.spines[["top", "right"]].set_visible(False)
-fig.savefig("paper/figs/fig2_static.pdf")
-fig.savefig("paper/figs/fig2_static.png", dpi=200)
-print("saved fig2 (two panels)")
+out = "paper/figs/fig2_static_stacked" if STACKED else "paper/figs/fig2_static"
+fig.savefig(out + ".pdf")
+fig.savefig(out + ".png", dpi=200)
+print("saved", out)
