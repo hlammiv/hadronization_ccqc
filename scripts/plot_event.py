@@ -36,25 +36,27 @@ def load(path):
 
 def fig4(path):
     c, sh, cfg, _ = load(path)
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(4.2, 4.6), sharex=True,
-                                   constrained_layout=True)
-    ax1.plot(c["t"], c["t_eff"] * 1e3, color=INK, lw=1.8)
-    ax1.axhline(float(cfg["t_chem"]) * 1e3, color=MUTED, lw=1.0, ls="--")
-    ax1.text(c["t"][-1], float(cfg["t_chem"]) * 1e3 * 1.1, r"$T_{\rm chem}$",
-             ha="right", color=MUTED, fontsize=8)
-    ax1.set_ylabel(r"$T_{\rm eff}$ [MeV]")
-    ax1.set_yscale("log")
+    fig, ax = plt.subplots(figsize=(4.2, 2.9), constrained_layout=True)
     ts = [r["t"] for r in sh]
     for sp, col in SPECIES_COLORS.items():
         y = np.array([r.get(sp, 0) for r in sh], float)
         if y.max() == 0:
             continue
-        ax2.plot(ts, y, color=col, lw=1.7)
-        ax2.text(ts[-1], y[-1], f" {sp}", color=col, fontsize=8, va="center")
-    ax2.set_xlabel(r"$t$ [fm/$c$]")
-    ax2.set_ylabel("bound clusters")
-    for ax in (ax1, ax2):
-        ax.spines[["top", "right"]].set_visible(False)
+        ax.plot(ts, y, color=col, lw=1.7)
+        ax.text(ts[-1], max(y[-1], 0.5), f" {sp}", color=col, fontsize=8,
+                va="center")
+    # mark the chemical freeze-out crossing
+    t_chem = float(cfg["t_chem"])
+    below = np.where(c["t_eff"] < t_chem)[0]
+    if len(below):
+        t_cross = c["t"][below[0]]
+        ax.axvline(t_cross, color=MUTED, lw=1.0, ls="--")
+        ax.text(t_cross, ax.get_ylim()[1] * 0.97,
+                r" $T_{\rm eff}=T_{\rm chem}$", color=MUTED, fontsize=7.5,
+                va="top")
+    ax.set_xlabel(r"$t$ [fm/$c$]")
+    ax.set_ylabel("bound clusters")
+    ax.spines[["top", "right"]].set_visible(False)
     fig.savefig("paper/figs/fig4_species_t.pdf")
     fig.savefig("paper/figs/fig4_species_t.png", dpi=200)
     print("saved fig4")

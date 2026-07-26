@@ -59,11 +59,12 @@ factor-of-four range of quench rates.}
 \end{figure}
 
 \begin{figure}[t]
-\includegraphics[width=\columnwidth]{figs/fig4_species_t.pdf}
-\caption{One event at default parameters ($N=604$, $H_0=0.1\,c/\fm$):
-cooling history and bound-cluster counts per snapshot.  Mesons condense
-gradually as the Hubble redshift drains relative kinetic energy;
-(anti)baryons and transient tetraquarks appear late.}
+\includegraphics[width=0.9\columnwidth]{figs/fig4_species_t.pdf}
+\caption{Bound-cluster counts per snapshot for one event at default
+parameters ($N=3000$, $H_0=0.1\,c/\fm$; the dashed line marks the
+$\Tchem$ crossing).  Mesons condense gradually as the Hubble redshift
+drains relative kinetic energy; (anti)baryons and transient
+tetraquarks appear late.}
 \label{fig:speciest}
 \end{figure}
 
@@ -168,54 +169,29 @@ while mesons rise only $1.6\times$
 quoted as prescription brackets, $T/M = 3\times10^{-3}$--$2.4\times
 10^{-2}$.
 
-\subsection{Annihilation timescales and flavor chemistry}
+\subsection{Annihilation parameters: ratios are robust}
 
-\begin{figure}[t]
-\includegraphics[width=\columnwidth]{figs/fig7_scan_tau.pdf}
-\caption{Species yields versus bound-pair lifetime $\tau_{\rm bound}$ at
-pure photon branching ($P_\gamma=1$; $N=3000$, 16 events/point).
-Meson and baryon yields are flat across $\tau_{\rm bound}=5\fm/c$ to
-$\infty$: the bound-pair duty cycle inside $d_{\rm ann}$ makes
-effective lifetimes long compared to the simulated window.}
-\label{fig:scantau}
-\end{figure}
-
-At $P_\gamma=1$ every annihilation removes a pair permanently
-($14$--$17$ photons escape per event at $N=3000$), yet meson yields
-stay flat at $189$--$193$ across the full $\tau_{\rm bound}$ range
-(Fig.~\ref{fig:scantau}): the loss of $\sim1\%$ of the quarks is
-invisible against ongoing Hubble capture.  The
-lifetime calibration makes this quantitative: prepared bound mesons with
-a reference orbit (duty cycle $0.386$ inside $d_{\rm ann}$) decay with
-$\tau_{\rm eff} = (7.2\text{--}7.3)\,\tau_{\rm bound}$, measured across a
-factor of four in $\tau_{\rm bound}$ and consistent with the predicted
-$3/\text{duty} = 7.8$; wider orbits have smaller duty cycles and
-correspondingly longer effective lifetimes, which is why late-forming
-mesons deplete only mildly within the simulated window.
-
-\begin{figure}[t]
-\includegraphics[width=\columnwidth]{figs/fig8_chemistry.pdf}
-\caption{Chemistry-active slow-quench event ($H_0=0.02\,c/\fm$,
-$\lambda_{\rm scatt}=20\,c/\fm$, $P_\gamma=0.3$,
-$\tau_{\rm bound}=10\fm/c$): (a) net strangeness production through
-thermal-weight re-injection (the classical strangeness-enhancement
-analog), $N_s/N$ rising from $0.232$ to $0.251$; (b) escaped-photon pair
-energies, peaked near $2m_q$ plus thermal motion.}
-\label{fig:chem}
-\end{figure}
-
-With the gluon channel active, flavor chemistry operates:
-Fig.~\ref{fig:chem} shows a slow-quench event in which re-injection at
-falling $\Teff$ raises the strange fraction by two percentage points
-while 55 annihilations escape to the photon ledger.  A dedicated
-$P_\gamma$ scan ($N=3000$, $\tau_{\rm bound}=20\fm/c$, 24 events per
-point) finds the species ratios \emph{flat} in the branching fraction
---- mesons $191$--$195$, tetraquarks $0.67$--$0.75$ per event across
-$P_\gamma=0$--$1$ --- while the escaped-photon count scales linearly
-($0$, $91$, $168$, $370$ per 24 events): at these timescales the
-electromagnetic drain decouples from the hadro-chemistry, making the
-photon ledger a clean emission observable rather than a chemistry
-distorter.
+Two dedicated $N=3000$ scans establish that the annihilation sector,
+while fully active, does not distort the species chemistry.  Scanning
+the bound-pair lifetime at pure photon branching
+($\tau_{\rm bound}=5\fm/c\to\infty$, $P_\gamma=1$) leaves meson yields
+flat at $189$--$193$ per event even as $14$--$17$ photons escape
+permanently per event: the loss of $\sim1\%$ of the quarks is
+invisible against ongoing Hubble capture.  The lifetime calibration
+explains why --- a prepared bound meson on a reference orbit (duty
+cycle $0.386$ inside $d_{\rm ann}$) decays with $\tau_{\rm eff} =
+(7.2\text{--}7.3)\,\tau_{\rm bound}$, consistent with the predicted
+$3/\text{duty}=7.8$, and the wider orbits of late-captured mesons are
+longer-lived still.  Scanning the branching fraction instead
+($P_\gamma=0$--$1$ at $\tau_{\rm bound}=20\fm/c$) leaves mesons at
+$191$--$195$ and tetraquarks at $0.67$--$0.75$ per event while the
+escaped-photon count scales linearly ($0$, $91$, $168$, $370$ per 24
+events): the electromagnetic drain decouples from the
+hadro-chemistry, making the photon ledger a clean emission observable.
+The gluon channel does drive flavor chemistry --- in a slow-quench
+event ($H_0=0.02\,c/\fm$, $\lambda_{\rm scatt}=20\,c/\fm$)
+thermal-weight re-injection raises the strange fraction from $0.232$
+to $0.251$, the classical strangeness-enhancement analog.
 
 \subsection{The diquark question, dynamically}
 
