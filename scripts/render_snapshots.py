@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Fig. 3: three-panel event render with cluster bonds and zoom insets.
+"""Fig. 3: three-panel event render with an external zoom column.
 
-Full-box x-y projection: unbound quarks are faint points; members of
-eventual clusters are colored by species with bonds drawn once members
-approach each other (assembly becomes visible); rare species get large
-ringed markers; the final panel carries zoom insets on a baryon and on
-the largest exotic cluster.
+Full-box x-y projection per time slice: unbound quarks are faint points;
+members of eventual clusters are colored by species and bonded once the
+cluster has assembled (all pair separations within 1.2 lambda_D(t), which
+grows with the comoving screening).  Zoom boxes live in a dedicated fourth
+column OUTSIDE the final panel, so they can never occlude data or each
+other; their targets are chosen from the right half of the panel and the
+slots are ordered by target height, keeping connectors short and parallel.
 
 Usage: python scripts/render_snapshots.py runs/render_event.h5
 """
@@ -27,20 +29,26 @@ SPECIES_COLORS = {
 }
 RARE = {"baryon", "antibaryon", "tetraquark", "pentaquark", "antipentaquark"}
 FREE = "#c9c9c9"
-# a cluster counts as assembled once all pairs are within ~1.2 lambda_D(t):
-# late captures are wide (comoving screening), so the cut must scale with a(t)
-def bond_cut(lam_d0, h0, t):
-    return 1.2 * lam_d0 * (1.0 + h0 * t)
 ABBREV = {"meson": "M", "baryon": "B", "antibaryon": r"$\bar{\rm B}$",
-          "tetraquark": "T", "pentaquark": "P", "antipentaquark": r"$\bar{\rm P}$"}
+          "tetraquark": "T", "pentaquark": "P",
+          "antipentaquark": r"$\bar{\rm P}$"}
+
+
+def bond_cut(lam_d0, h0, t):
+    """Assembled once all pairs are within ~1.2 lambda_D(t)."""
+    return 1.2 * lam_d0 * (1.0 + h0 * t)
 
 
 def recenter(pts, L):
-    """Minimum-image recentering of cluster members about the first one."""
     ref = pts[0]
     d = pts - ref
     d -= L * np.round(d / L)
     return ref + d
+
+
+def max_sep(pts):
+    return max(np.linalg.norm(pts[a] - pts[b])
+               for a in range(len(pts)) for b in range(a + 1, len(pts)))
 
 
 def main(path):
@@ -58,12 +66,14 @@ def main(path):
     clusters = [(tuple(map(int, mstr.split(","))), species)
                 for mstr, species in members]
 
-    fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.6),
-                             constrained_layout=True)
-    for panel, (ax, (t, L, x, idx)) in enumerate(zip(axes, snaps)):
+    fig = plt.figure(figsize=(11.4, 3.6), constrained_layout=True)
+    gs = fig.add_gridspec(2, 4, width_ratios=[1, 1, 1, 0.36])
+    axes = [fig.add_subplot(gs[:, i]) for i in range(3)]
+    zoom_axes = [fig.add_subplot(gs[0, 3]), fig.add_subplot(gs[1, 3])]
+
+    for ax, (t, L, x, idx) in zip(axes, snaps):
         pos = {int(i): x[k] for k, i in enumerate(idx)}
         in_cluster = {i for mem, _ in clusters for i in mem}
-
         free_pts = np.array([pos[i] for i in pos if i not in in_cluster])
         ax.scatter(free_pts[:, 0], free_pts[:, 1], s=2.5, c=FREE,
                    linewidths=0, alpha=0.45)
@@ -75,11 +85,7 @@ def main(path):
             if len(pts) == 0:
                 continue
             pts = recenter(pts, L)
-            sep = max(np.linalg.norm(pts[a] - pts[b])
-                      for a in range(len(pts)) for b in range(a + 1, len(pts)))
-            assembled = sep < bond_cut(lam_d0, h0, t)
-            if not assembled:
-                # not yet a hadron: indistinguishable from the free gas
+            if max_sep(pts) >= bond_cut(lam_d0, h0, t):
                 ax.scatter(pts[:, 0] % L, pts[:, 1] % L, s=2.5, c=FREE,
                            linewidths=0, alpha=0.45)
                 continue
@@ -88,8 +94,7 @@ def main(path):
                     ax.plot(pts[[a, b], 0], pts[[a, b], 1],
                             color=col, lw=1.1, alpha=0.9, zorder=3)
             big = species in RARE
-            ax.scatter(pts[:, 0], pts[:, 1],
-                       s=(60 if big else 9), c=col,
+            ax.scatter(pts[:, 0], pts[:, 1], s=(60 if big else 9), c=col,
                        linewidths=(0.9 if big else 0.3),
                        edgecolors="white", zorder=(5 if big else 4))
             counts[species] = counts.get(species, 0) + 1
@@ -106,108 +111,60 @@ def main(path):
         ax.set_title(f"$t={t:.0f}$ fm/$c$,  $L={L:.0f}$ fm:  {label}",
                      fontsize=8, loc="left")
 
-    # zoom insets on the final panel: one baryon, one largest exotic
+    # ---- external zoom column, fed from the final panel ----
     t, L, x, idx = snaps[-1]
     pos = {int(i): x[k] for k, i in enumerate(idx)}
-    ax = axes[2]
+    ax3 = axes[2]
+    cut_f = bond_cut(lam_d0, h0, t)
 
-    CORNERS = {  # slot name -> (inset rect, corner center in axes frac)
-        "TL": ([0.03, 0.63, 0.32, 0.32], (0.19, 0.79)),
-        "TR": ([0.65, 0.63, 0.32, 0.32], (0.81, 0.79)),
-        "BL": ([0.03, 0.05, 0.32, 0.32], (0.19, 0.21)),
-        "BR": ([0.65, 0.05, 0.32, 0.32], (0.81, 0.21)),
-    }
-    used_corners = set()
+    def geom(mem):
+        pts = recenter(np.array([pos[i] for i in mem if i in pos]), L)
+        return pts, (pts.mean(axis=0) % L) / L, max_sep(pts)
 
-    def nearest_free_corner(c, L_box):
-        fx, fy = c[0] / L_box, c[1] / L_box
-        best, best_d = None, 1e9
-        for name, (rect, (cx, cy)) in CORNERS.items():
-            if name in used_corners:
-                continue
-            d = (fx - cx) ** 2 + (fy - cy) ** 2
-            if d < best_d:
-                best, best_d = name, d
-        return best
+    compact = []
+    for mem, sp in clusters:
+        present = [i for i in mem if i in pos]
+        if len(present) < 2:
+            continue
+        pts, frac, sep = geom(mem)
+        if sep < cut_f:
+            compact.append((mem, sp, pts, frac, sep))
+    exotics = [c for c in compact if len(c[0]) >= 4]
+    baryons = [c for c in compact if c[1] in ("baryon", "antibaryon")]
 
-    def add_inset(mem, species, corner):
-        pts = np.array([pos[i] for i in mem if i in pos])
-        if len(pts) == 0:
-            return
-        L_box = snaps[-1][1]
-        pts = recenter(pts, L_box)
-        c = pts.mean(axis=0)
-        used_corners.add(corner)
-        loc = CORNERS[corner][0]
-        sep = max(np.linalg.norm(pts[a] - pts[b])
-                  for a in range(len(pts)) for b in range(a + 1, len(pts)))
-        w = 0.75 * sep + 0.5
+    chosen = []
+    if exotics:
+        top = max(len(c[0]) for c in exotics)
+        pool = [c for c in exotics if len(c[0]) == top]
+        chosen.append(max(pool, key=lambda c: c[3][0]))   # rightmost target
+    if baryons:
+        chosen.append(max(baryons, key=lambda c: c[3][0]))
+    # top slot serves the higher target; connectors stay parallel
+    chosen.sort(key=lambda c: -c[3][1])
+
+    for (mem, species, pts, frac, sep), zax in zip(chosen, zoom_axes):
         col = SPECIES_COLORS.get(species, "#008300")
-        axi = ax.inset_axes(loc)
-        axi.scatter(pts[:, 0], pts[:, 1], s=90, c=col, edgecolors="white",
-                    linewidths=1.0, zorder=5)
+        w = 0.75 * sep + 0.5
+        zax.scatter(pts[:, 0], pts[:, 1], s=110, c=col, edgecolors="white",
+                    linewidths=1.1, zorder=5)
         for a in range(len(pts)):
             for b in range(a + 1, len(pts)):
-                axi.plot(pts[[a, b], 0], pts[[a, b], 1], color=col, lw=1.6)
-        axi.set_xlim(c[0] - w, c[0] + w)
-        axi.set_ylim(c[1] - w, c[1] + w)
-        axi.set_xticks([]); axi.set_yticks([])
-        for s in axi.spines.values():
-            s.set_color(col); s.set_linewidth(1.4)
-        axi.set_title(species, fontsize=7, color=col, pad=1.5)
-        ax.indicate_inset_zoom(axi, edgecolor=col, lw=1.0)
-
-    def final_sep(mem):
-        pts = recenter(np.array([pos[i] for i in mem if i in pos]),
-                       snaps[-1][1])
-        return max(np.linalg.norm(pts[a] - pts[b])
-                   for a in range(len(pts)) for b in range(a + 1, len(pts)))
-
-    cut_f = bond_cut(lam_d0, h0, snaps[-1][0])
-    baryons = sorted(((m, s) for m, s in clusters
-                      if s in ("baryon", "antibaryon") and final_sep(m) < cut_f),
-                     key=lambda c: final_sep(c[0]))
-    exotics = sorted((c for c in clusters
-                      if len(c[0]) >= 4 and final_sep(c[0]) < cut_f),
-                     key=lambda c: (-len(c[0]), final_sep(c[0])))
-    # joint (cluster, corner) choice: among all compact candidates of a
-    # species class, take the one already sitting beside a free corner --
-    # connectors stay short and cannot cross or hide other insets
-    L_box = snaps[-1][1]
-
-    def axfrac(mem):
-        pts = recenter(np.array([pos[i] for i in mem if i in pos]), L_box)
-        c = (pts.mean(axis=0) % L_box) / L_box
-        return c
-
-    def rect_contains(rect, f):
-        x0, y0, w_, h_ = rect
-        return x0 <= f[0] <= x0 + w_ and y0 <= f[1] <= y0 + h_
-
-    def pick(cands):
-        best = None
-        for mem, species in cands:
-            f = axfrac(mem)
-            for name, (rect, (cx, cy)) in CORNERS.items():
-                if name in used_corners:
-                    continue
-                d = np.hypot(f[0] - cx, f[1] - cy)
-                if rect_contains(rect, f):
-                    d += 1.0  # do not hide the target under its own inset
-                if best is None or d < best[0]:
-                    best = (d, mem, species, name)
-        return best
-
-    # largest exotic size class first, then baryons
-    if exotics:
-        top = len(exotics[0][0])
-        got = pick([c for c in exotics if len(c[0]) == top])
-        if got:
-            add_inset(got[1], got[2], got[3])
-    if baryons:
-        got = pick(baryons)
-        if got:
-            add_inset(got[1], got[2], got[3])
+                zax.plot(pts[[a, b], 0], pts[[a, b], 1], color=col, lw=1.8)
+        cc = pts.mean(axis=0)
+        zax.set_xlim(cc[0] - w, cc[0] + w)
+        zax.set_ylim(cc[1] - w, cc[1] + w)
+        zax.set_xticks([])
+        zax.set_yticks([])
+        for s in zax.spines.values():
+            s.set_color(col)
+            s.set_linewidth(1.5)
+        zax.set_title(species, fontsize=8, color=col, pad=2)
+        ax3.indicate_inset(
+            bounds=[cc[0] - w, cc[1] - w, 2 * w, 2 * w],
+            inset_ax=zax, edgecolor=col, lw=1.2, alpha=0.9,
+        )
+    for zax in zoom_axes[len(chosen):]:
+        zax.axis("off")
 
     handles = [plt.Line2D([], [], marker="o", ls="", color=c, label=sp,
                           markersize=6)
