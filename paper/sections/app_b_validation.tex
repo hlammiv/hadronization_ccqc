@@ -1,44 +1,28 @@
 \section{Numerical validation and systematics}
 \label{app:validation}
 
-\subsection{Integrator and conservation}
+\subsection{Verification suite}
 
-The relativistic kick--drift--kick leapfrog conserves energy to
-$|\Delta E/E|<10^{-4}$ over $10^4$ steps at production timestep
-$dt=0.005\fm/c$ in NVE many-body runs, and to $<10^{-6}$ over $2\times
-10^4$ steps for an isolated bound two-body orbit; total momentum is
-conserved to machine precision.  The energy-shifted cutoff (potential
-continuous at $r_{\rm cut}$) eliminates the truncation random walk.
-The Maxwell--J\"uttner sampler reproduces the virial estimator
-$\Teff=\langle p^2/3E\rangle$ at the half-percent level; free expansion
-redshifts momenta exactly as $1/a$.
-
-\subsection{Reaction hazards}
-
-Annihilation is implemented as continuous Poisson hazards, so event
-counts are timestep-independent by construction; ensemble survival
-probabilities match $e^{-\lambda t/3}$ at the few-percent level for both
-the scattering hazard and the bound-pair hazard, and $\tau_{\rm
-bound}\to\infty$ recovers immortal bound states exactly.  The
-\emph{lifetime calibration} converts the model parameter into an
-effective width: a prepared bound meson on a reference orbit spends a
-fraction $0.386$ of its period inside $d_{\rm ann}$, and its measured
-lifetime is $\tau_{\rm eff}=(7.2\text{--}7.3)\,\tau_{\rm bound}$ across
-$\tau_{\rm bound}=0.5$--$2\fm/c$ (150 trials each, exponential MLE),
-against the duty-cycle prediction $3/0.386=7.8$.  Four-momentum, color
-neutrality, and net flavor are conserved exactly through photon and
-re-injection events (asserted at runtime on every event).
-
-\subsection{Cluster identification}
-
-Unit configurations: an $rgb$ triple identifies as one baryon, not
-fragments; two well-separated tight mesons never merge into a
-tetraquark; a compact $(2,2)$ blob is assigned tetraquark only when its
-four-body energy beats every meson+meson split; a $cc\bar u\bar d$
-cluster is flagged manifestly exotic while $c\bar c q\bar q$ is not.
-The persistence filter (three consecutive snapshots) removes transient
-coincidences; its depth, the binding threshold $\Delta E_{\rm th}$, and
-the prefilter radius $r_{\rm cl}$ are scanned systematics.
+Every claim of Sec.~\ref{sec:methods} is covered by an automated test.
+Dynamics: the relativistic leapfrog conserves energy to
+$|\Delta E/E|<10^{-4}$ over $10^4$ NVE steps ($<10^{-6}$ for an
+isolated two-body orbit), momentum to machine precision, and free
+expansion redshifts momenta exactly as $1/a$; the energy-shifted
+cutoff eliminates the truncation random walk, and the
+Maxwell--J\"uttner sampler reproduces $\Teff=\langle p^2/3E\rangle$ at
+the half-percent level.  Reactions: Poisson hazards are
+timestep-independent by construction, ensemble survival matches
+$e^{-\lambda t/3}$ at the few-percent level in both hazard classes,
+$\tau_{\rm bound}\to\infty$ recovers immortal bound states, and the
+lifetime calibration gives
+$\tau_{\rm eff}=(7.2\text{--}7.3)\,\tau_{\rm bound}$ against the
+duty-cycle prediction $3/0.386=7.8$; four-momentum, color, and flavor
+are asserted through every event.  Cluster identification: hand-built
+configurations verify that an $rgb$ triple is one baryon, separated
+mesons never merge into a tetraquark, a compact $(2,2)$ wins only when
+its four-body energy beats every meson+meson split, and
+$cc\bar u\bar d$ (but not $c\bar c q\bar q$) is flagged manifestly
+exotic.
 
 \subsection{Systematics summary}
 

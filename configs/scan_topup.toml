@@ -1,0 +1,11 @@
+# REMOTE: statistics top-ups. H0_0.20 to 96 seeds (matches merged 0.05/0.10).
+mode = "scan"
+base = "configs/prod_test.toml"
+seeds = 48
+seed_offset = 48
+max_workers = 10
+numba_threads = 2
+
+[[points]]
+name = "H0_0.20"
+h0 = 0.20

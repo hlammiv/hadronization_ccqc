@@ -1,0 +1,13 @@
+# REMOTE: small-system stats: N300 to 160 seeds + new N1000 point.
+mode = "scan"
+base = "configs/default.toml"
+seeds = 128
+seed_offset = 32
+max_workers = 10
+numba_threads = 1
+
+[[points]]
+name = "N300_H0.1"
+n_pairs = 150
+n_ccbar = 0
+h0 = 0.10

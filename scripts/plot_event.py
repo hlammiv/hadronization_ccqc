@@ -56,6 +56,8 @@ def fig4(path):
                 va="top")
     ax.set_xlabel(r"$t$ [fm/$c$]")
     ax.set_ylabel("bound clusters")
+    ax.set_yscale("log")
+    ax.set_ylim(bottom=0.5)
     ax.spines[["top", "right"]].set_visible(False)
     fig.savefig("paper/figs/fig4_species_t.pdf")
     fig.savefig("paper/figs/fig4_species_t.png", dpi=200)
